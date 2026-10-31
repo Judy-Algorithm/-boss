@@ -1,4 +1,4 @@
-#labels .bubble{transform:none;max-width:min(172px,calc(100% - 20px));max-height:100px;overflow-wrap:anywhere;box-sizing:border-box;pointer-events:none;font-size:11px;line-height:1.5;white-space:pre-wrap}
+#labels .bubble{transform:none;max-width:min(258px,calc(100% - 20px));max-height:150px;overflow-wrap:anywhere;box-sizing:border-box;pointer-events:none;font-size:16.5px;line-height:1.5;white-space:pre-wrap}
 #labels .bubble:after{left:var(--tail-left,50%);transform:translateX(-50%) rotate(45deg)}
-.private-room #labels .bubble{width:max-content;max-width:min(270px,calc(100% - 20px));max-height:130px;font-size:12px;line-height:1.45;padding:8px 12px}
-#labels .bubble[data-source="error"]{color:#927763;font-weight:500;font-size:10px}
+.private-room #labels .bubble{width:max-content;max-width:min(405px,calc(100% - 20px));max-height:195px;font-size:18px;line-height:1.45;padding:8px 12px}
+#labels .bubble[data-source="error"]{color:#927763;font-weight:500;font-size:15px}

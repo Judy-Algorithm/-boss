@@ -32,7 +32,7 @@ export function refreshRoleSticker(label,character){
 
 export function positionRoleSticker(actor,project,field,single=false){
  const side=single?-1:actor.i%2?1:-1,w=field.clientWidth,h=field.clientHeight;
- const unit=Math.max(9,Math.min(12,w*.028));
+ const unit=1.5*Math.max(9,Math.min(12,w*.028));
  const edge=project(actor.station.position.x+side*1.10,1.24,actor.station.position.z+.12);
  const rowPixels=Math.abs(project(0,1.24,actor.station.position.z+OFFICE_LAYOUT.rowSpacing).y-project(0,1.24,actor.station.position.z).y);
  const textHeight=Math.max(32,Math.min(78,rowPixels-18));
@@ -42,7 +42,7 @@ export function positionRoleSticker(actor,project,field,single=false){
  const halfWidth=(columns*unit*1.15+13)/2;
  const halfHeight=(Math.min(rows,glyphs)*(unit+1)+18)/2;
  const x=Math.max(halfWidth+5,Math.min(w-halfWidth-5,edge.x-side*3));
- const y=Math.max(82+halfHeight,Math.min(h-halfHeight-8,edge.y));
+ const y=Math.max(104+halfHeight,Math.min(h-halfHeight-8,edge.y));
  const label=actor.label;label.style.left=`${x}px`;label.style.top=`${y}px`;label.style.fontSize=`${unit}px`;
  const wrapped=columns>1&&['加班大魔王','路过的实习生'].includes(actor.c.name);
  if(label.dataset.wrapped!==String(wrapped)||label.dataset.name!==actor.c.name){fillName(label.firstChild,actor.c.name,wrapped);label.dataset.wrapped=String(wrapped);label.dataset.name=actor.c.name;label.setAttribute('aria-label',`角色：${actor.c.name}`);}

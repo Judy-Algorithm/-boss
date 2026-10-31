@@ -1,37 +1,37 @@
 #roster .roster-item{grid-template-columns:58px minmax(0,1fr) auto;gap:11px;min-height:83px;padding:13px 0;align-items:center}
 .roster-portrait{display:block;width:58px;height:58px;object-fit:cover;object-position:center;border-radius:15px;border:1.5px solid #d5ad7c;background:#f3ddb7;box-shadow:0 2px 0 #9f754c1c}
 #roster .roster-item>div{min-width:0}
-#roster .roster-item h3{font-size:17px;line-height:1.4;margin-bottom:3px}
-#roster .roster-item small{display:block;font-size:14px;line-height:1.6;color:#805e49}
-#roster .roster-item p{font-size:14px;line-height:1.65;margin-top:4px;overflow-wrap:anywhere}
-#roster .relation-edit{font-size:17px}
+#roster .roster-item h3{font-size:25.5px;line-height:1.4;margin-bottom:3px}
+#roster .roster-item small{display:block;font-size:21px;line-height:1.6;color:#805e49}
+#roster .roster-item p{font-size:21px;line-height:1.65;margin-top:4px;overflow-wrap:anywhere}
+#roster .relation-edit{font-size:25.5px}
 @media(max-width:350px){#roster .roster-item{grid-template-columns:48px minmax(0,1fr) auto;gap:8px}.roster-portrait{width:48px;height:48px;border-radius:12px}}
 .role-name-edit{font:inherit;font-weight:inherit;text-align:left;color:inherit;background:none;padding:4px 0;min-height:36px;touch-action:manipulation;overflow-wrap:anywhere}
-button.role-name-edit:after{content:' ✎';font-size:11px;color:#ae8058;font-weight:400}
+button.role-name-edit:after{content:' ✎';font-size:16.5px;color:#ae8058;font-weight:400}
 .role-detail-edit{display:block;width:100%;min-height:36px;padding:4px 0;background:none;color:inherit;font:inherit;text-align:left;line-height:inherit;overflow-wrap:anywhere;touch-action:manipulation}
-.role-detail-edit:after{content:' ✎';font-size:10px;color:#ae8058;white-space:nowrap}
+.role-detail-edit:after{content:' ✎';font-size:15px;color:#ae8058;white-space:nowrap}
 button.relation-edit{min-width:44px;min-height:44px;border-radius:12px;padding:5px;background:#ead1a84d;touch-action:manipulation}
-#customization-status{font-size:13px;color:#987152;line-height:1.6;margin:5px 0 12px;min-height:15px}
+#customization-status{font-size:19.5px;color:#987152;line-height:1.6;margin:5px 0 12px;min-height:15px}
 #character-settings-modal{z-index:45;padding:20px;background:#30283d99}
 .character-settings-card{width:100%;max-width:350px;max-height:92%;overflow:auto;padding:22px;border:2px solid #dfba8a;border-radius:22px;background:#fff0d6;box-shadow:0 8px 30px #36233340;color:#725044}
-.character-settings-card h2{font-size:20px;margin:0}
+.character-settings-card h2{font-size:30px;margin:0}
 .character-settings-card .icon-button{min-width:44px;min-height:44px}
-.settings-original,.settings-note{font-size:11px;line-height:1.6;color:#9b7a61;margin:10px 0 15px}
-.settings-label{display:block;font-size:13px;font-weight:800;color:#725044}
-#character-label,#character-role,#character-bio{width:100%;min-height:46px;margin:8px 0 16px;border:1.5px solid #ceae86;border-radius:10px;padding:10px 12px;background:#fffbf0;color:#543b3b;font:16px 'PingFang SC',system-ui,sans-serif;outline-offset:2px}
+.settings-original,.settings-note{font-size:16.5px;line-height:1.6;color:#9b7a61;margin:10px 0 15px}
+.settings-label{display:block;font-size:19.5px;font-weight:800;color:#725044}
+#character-label,#character-role,#character-bio{width:100%;min-height:46px;margin:8px 0 16px;border:1.5px solid #ceae86;border-radius:10px;padding:10px 12px;background:#fffbf0;color:#543b3b;font:24px 'PingFang SC',system-ui,sans-serif;outline-offset:2px}
 #character-bio{min-height:95px;resize:vertical;line-height:1.5}
 .character-settings-card{overscroll-behavior:contain;scroll-padding:15px}
 .settings-relation-heading{display:flex;align-items:center;justify-content:space-between}
-.settings-relation-heading output{font-size:26px;font-weight:850;color:#c87959}
+.settings-relation-heading output{font-size:39px;font-weight:850;color:#c87959}
 .settings-relation-heading output.positive{color:#6f9566}
 .settings-stepper{display:flex;align-items:center;gap:12px;margin-top:9px}
-.settings-stepper button{width:44px;height:44px;flex-shrink:0;border-radius:12px;background:#efd5ad;color:#78533f;font-size:24px;touch-action:manipulation}
+.settings-stepper button{width:44px;height:44px;flex-shrink:0;border-radius:12px;background:#efd5ad;color:#78533f;font-size:36px;touch-action:manipulation}
 #character-relation{width:100%;min-width:0;height:44px;margin:0;accent-color:#d9825d;touch-action:pan-x}
-.settings-range-ends{display:flex;justify-content:space-between;margin-top:2px;font-size:10px;color:#9c7f65}
-.settings-preview{padding:12px 8px;background:#f6dfbb;border-radius:10px;text-align:center;font-size:13px;font-weight:750;line-height:1.5}
+.settings-range-ends{display:flex;justify-content:space-between;margin-top:2px;font-size:15px;color:#9c7f65}
+.settings-preview{padding:12px 8px;background:#f6dfbb;border-radius:10px;text-align:center;font-size:19.5px;font-weight:750;line-height:1.5}
 .settings-note{margin:10px 0 2px}
-.settings-error{font-size:12px;color:#b45147;min-height:17px;margin:5px 0}
+.settings-error{font-size:18px;color:#b45147;min-height:17px;margin:5px 0}
 .settings-actions{display:flex;gap:10px}
-.settings-actions button{flex:1;min-height:44px;font-size:15px;touch-action:manipulation}
+.settings-actions button{flex:1;min-height:44px;font-size:22.5px;touch-action:manipulation}
 .settings-cancel{background:#ead5b7;color:#88664f;border-radius:12px}
-.settings-reset{display:block;margin:15px auto 0;padding:8px 3px;background:none;color:#9b7a61;font-size:11px;text-decoration:underline;touch-action:manipulation}
+.settings-reset{display:block;margin:15px auto 0;padding:8px 3px;background:none;color:#9b7a61;font-size:16.5px;text-decoration:underline;touch-action:manipulation}
