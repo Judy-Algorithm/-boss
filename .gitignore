@@ -1,0 +1,20 @@
+# Dependencies, builds and local hosting metadata
+node_modules/
+dist/
+dist-it-motion/
+.vercel/
+.openai/
+.DS_Store
+*.log
+
+# Credentials stay on this computer; only blank templates are committed.
+.env
+.env.*
+!.env.example
+!.env.local.example
+
+# Original generation files and experiment output are not runtime dependencies.
+# The deployable models, textures, fonts and music are in game/public/.
+/assets/
+/work/
+/validation/

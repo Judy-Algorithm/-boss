@@ -1,0 +1,41 @@
+Background music credits — 鼠鼠大BOSS
+
+"Monkeys Spinning Monkeys" Kevin MacLeod (incompetech.com)
+Source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400011
+Licensed under Creative Commons: By Attribution 4.0 License
+https://creativecommons.org/licenses/by/4.0/
+Changes: None. Played at lower volume and looped.
+
+"Sneaky Snitch" Kevin MacLeod (incompetech.com)
+Source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100772
+Licensed under Creative Commons: By Attribution 4.0 License
+https://creativecommons.org/licenses/by/4.0/
+Changes: Re-encoded to 112 kbps MP3 at 44.1 kHz for local game playback. No editing or tempo changes. Played at lower volume and looped.
+
+"Fluffing a Duck" Kevin MacLeod (incompetech.com)
+Source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100768
+Licensed under Creative Commons: By Attribution 4.0 License
+https://creativecommons.org/licenses/by/4.0/
+Changes: Re-encoded to 112 kbps MP3 at 44.1 kHz for local game playback. No editing or tempo changes. Played at lower volume and looped.
+
+"Investigations" Kevin MacLeod (incompetech.com)
+Source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100646
+Licensed under Creative Commons: By Attribution 4.0 License
+https://creativecommons.org/licenses/by/4.0/
+Changes: Re-encoded to 112 kbps MP3 at 44.1 kHz for local game playback. No editing or tempo changes. Played at lower volume and looped.
+
+"Marty Gots a Plan" Kevin MacLeod (incompetech.com)
+Source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1500015
+Licensed under Creative Commons: By Attribution 4.0 License
+https://creativecommons.org/licenses/by/4.0/
+Changes: Re-encoded to 112 kbps MP3 at 44.1 kHz for local game playback. No editing or tempo changes. Played at lower volume and looped.
+
+"Carefree" Kevin MacLeod (incompetech.com)
+Source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400037
+Licensed under Creative Commons: By Attribution 4.0 License
+https://creativecommons.org/licenses/by/4.0/
+Changes: Re-encoded to 112 kbps MP3 at 44.1 kHz for local game playback. No editing or tempo changes. Played at lower volume and looped.
+
+Source license policy: https://incompetech.com/music/royalty-free/licenses/
+Track-page attribution template and catalog checked on 2026-10-31.
+Interaction sound effects are generated locally with Web Audio.

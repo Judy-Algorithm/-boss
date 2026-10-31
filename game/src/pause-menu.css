@@ -1,0 +1,17 @@
+.pause-card{max-height:90%;overflow:auto;gap:8px}
+.pause-card>button{min-height:44px;touch-action:manipulation;transition:background .12s,color .12s,transform .1s,box-shadow .12s;border:2px solid transparent;border-radius:13px}
+.pause-card>button:not(.primary){font-size:14px;padding:10px 12px}
+.pause-card>button.menu-selected,.pause-card>button:active{background:linear-gradient(#e98b68,#d96f51)!important;color:#fff9df!important;border-color:#f5bc8b;box-shadow:0 4px 0 #945446;font-weight:800}
+.pause-card>button:active{transform:translateY(2px);box-shadow:0 1px 0 #945446}
+#menu-status{min-height:16px;margin:2px 0 0;font-size:11px;color:#956a51;text-align:center}
+#guide-modal,#credits-modal,#instructions-modal{z-index:32}
+.guide-heading>.icon-button{min-width:44px;min-height:44px;touch-action:manipulation}
+.instructions-card{max-width:360px}
+.instructions-card>h3{font-size:16px;color:#835043;margin:18px 0 8px}
+.instructions-card>p{font-size:14px;line-height:1.8;margin:8px 0 12px}
+.instructions-card b{color:#725044}
+.relation-rules{display:flex;gap:6px;margin:15px 0}
+.relation-rules>span{flex:1;padding:10px 4px;background:#f4dcba;border-radius:10px;text-align:center;font-size:14px;color:#755247}
+.relation-rules b{display:block;font-size:14px;margin-bottom:5px}
+.tool-select.tool-tapped{animation:tool-tap .28s ease-out}
+@keyframes tool-tap{0%{transform:scale(.93)}60%{transform:scale(1.04)}100%{transform:scale(1)}}

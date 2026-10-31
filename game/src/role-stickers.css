@@ -1,0 +1,7 @@
+#labels .role-sticker{display:block!important;position:absolute;writing-mode:vertical-rl;text-orientation:upright;line-height:1.15;letter-spacing:1px;font-weight:850;color:#54362e;background:linear-gradient(100deg,#fff0c9,#ffe4a7);border:1.5px solid #9c694a;border-radius:7px 6px 8px 5px;padding:9px 5px 7px;min-width:25px;box-shadow:1px 3px 0 #633f382e,0 2px 5px #35233824;transform:translate(-50%,-50%) rotate(-3deg);transform-origin:center;pointer-events:none;z-index:2}
+#labels .role-sticker.side-right{background:linear-gradient(100deg,#fff0d4,#ffdfb8);transform:translate(-50%,-50%) rotate(3deg)}
+#labels .role-sticker:before{content:'';position:absolute;width:16px;height:7px;top:-4px;left:50%;transform:translateX(-50%) rotate(-9deg);background:#f7d9aaeb;border:1px solid #b78d6444;border-radius:1px}
+#labels .role-sticker .sticker-latin{text-combine-upright:all;letter-spacing:0;font-size:.83em;font-weight:950}
+#labels .role-sticker .sticker-title{display:block;white-space:normal;word-break:break-all;max-height:var(--sticker-text-height);}
+#labels .role-sticker[data-wrapped="true"] .sticker-title{white-space:nowrap;max-height:none;}
+#labels .role-sticker.active{border-color:#d18a37;box-shadow:0 0 0 2px #ffe1a366,1px 3px 0 #633f382e}

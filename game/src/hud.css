@@ -1,0 +1,9 @@
+/* One shared baseline and spacing for the three counters and pause control. */
+#app{--hud-top:max(12px,calc(env(safe-area-inset-top,0px) + 8px));--hud-side:12px;--hud-gap:8px;--hud-pause:44px;--hud-height:56px}
+#hud{left:var(--hud-side);right:calc(var(--hud-side) + var(--hud-pause) + var(--hud-gap));top:var(--hud-top);height:var(--hud-height);display:grid;grid-template-columns:1fr 1.08fr 1fr;gap:var(--hud-gap);align-items:stretch}
+#hud>div:not(.time-track){position:static;inset:auto;transform:none;width:auto;min-width:0;height:var(--hud-height);margin:0;padding:5px 4px;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:1px solid #f5d8ba80;border-radius:14px;background:linear-gradient(#393044eb,#282537ed);box-shadow:0 3px 8px #30223a2e;color:#fff1c5}
+#hud small{order:-1;font-size:10px;line-height:12px;font-weight:700;letter-spacing:.5px;color:#eed8b9;white-space:nowrap}
+#hud .timer-wrap small{letter-spacing:2px}
+#hud strong,#hud #time{font-size:clamp(22px,7vw,29px);line-height:30px;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:-.5px;text-shadow:none}
+#pause{right:var(--hud-side);top:calc(var(--hud-top) + (var(--hud-height) - var(--hud-pause))/2);width:var(--hud-pause);height:var(--hud-pause);padding:0;display:grid;place-items:center;border:1px solid #f5d8ba80;border-radius:50%;background:linear-gradient(#393044eb,#282537ed);box-shadow:0 3px 8px #30223a2e;color:#fff1c5;font-size:25px;line-height:1;touch-action:manipulation}
+@media(max-width:350px){#app{--hud-side:9px;--hud-gap:6px}#hud small{font-size:9px}}
