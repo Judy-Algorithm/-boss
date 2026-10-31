@@ -7,7 +7,7 @@ export function installHomeCover({app,enabled=true,onGuide,onInstructions,onMusi
  cover.innerHTML=`<img class="cover-art" src="/backgrounds/moyu-office-cover-v1.jpg" alt="" fetchpriority="high" decoding="async">
  <div class="cover-wash" aria-hidden="true"></div>
  <div class="cover-brand"><h1><span>摸鱼</span><span>事务所</span></h1></div>
- <div class="cover-actions" aria-label="选择玩法"><p class="cover-tagline">敲走怨气，喂点快乐～</p><p class="cover-loading" role="status">办公室准备中…</p></div>
+ <div class="cover-actions" aria-label="选择玩法"><p class="cover-loading" role="status">办公室准备中…</p></div>
  <nav class="cover-links" aria-label="首页菜单"><button type="button" data-page="guide">人物图鉴</button><i aria-hidden="true">·</i><button type="button" data-page="instructions">玩法说明</button><i aria-hidden="true">·</i><button type="button" data-page="music">音乐设置</button></nav>`;
  const actions=cover.querySelector('.cover-actions');
  for(const [id,label] of [['practice','摸鱼'],['private-start','私聊']]){

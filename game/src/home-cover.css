@@ -9,7 +9,7 @@
 .cover-brand h1 span{display:block;font-size:clamp(63px,21vw,96px)}
 .cover-brand h1 span+span{font-size:clamp(67.5px,22.5vw,102px);letter-spacing:.06em}
 .cover-actions{position:absolute;left:11%;right:11%;bottom:10.5%;display:flex;gap:14px}
-.cover-tagline{position:absolute;bottom:calc(100% + 18px);left:-5%;right:-5%;margin:0;text-align:center;color:#75472f;font-family:var(--office-friendly-font);font-size:clamp(30px,8.55vw,37.5px);line-height:1.5;letter-spacing:1px;font-weight:800;text-shadow:0 1px 4px #fff2c9cc;transform:rotate(-2deg);pointer-events:none}
+
 .cover-loading{display:none;position:absolute;top:100%;left:0;right:0;margin:10px 0 0;text-align:center;color:#704b36;font-size:16.5px}
 #home-cover:has(#practice:disabled) .cover-loading{display:block}
 #home-cover #practice,#home-cover #private-start{flex:1;width:auto;min-width:0;min-height:58px;padding:11px 12px;border:2px solid #ffe5ae;border-radius:20px;font-size:33px;font-weight:900;letter-spacing:4px;touch-action:manipulation;transition:transform .12s,filter .12s,box-shadow .12s}
@@ -23,13 +23,13 @@
 .cover-links i{width:3px;height:3px;flex-shrink:0;border-radius:50%;background:#ae7f56;font-size:0;opacity:.8}
 .cover-open #hud,.cover-open #tool-tray,.cover-open #pause,.cover-open #controls{visibility:hidden}
 @keyframes cover-arrive{from{opacity:0;translate:0 -8px}to{opacity:1;translate:0 0}}
-@media(max-width:350px){.cover-actions{gap:11px}.cover-tagline{font-size:30px;letter-spacing:.8px;bottom:calc(100% + 15px)}.cover-links{gap:5px}.cover-links button{font-size:22.5px;padding:8px 5px;letter-spacing:.7px}#home-cover #practice,#home-cover #private-start{min-height:52px;font-size:30px}}
+@media(max-width:350px){.cover-actions{gap:11px}.cover-links{gap:5px}.cover-links button{font-size:22.5px;padding:8px 5px;letter-spacing:.7px}#home-cover #practice,#home-cover #private-start{min-height:52px;font-size:30px}}
 @media(prefers-reduced-motion:reduce){.cover-brand{animation:none}}
 
 .cover-links{left:2%;right:2%;gap:2px}
 .cover-links button{min-width:0;padding-left:4px;padding-right:4px;letter-spacing:0;white-space:nowrap}
 .cover-actions{left:7%;right:7%;gap:12px;bottom:max(10.5%,calc(env(safe-area-inset-bottom,0px) + 90px))}
 #home-cover #practice,#home-cover #private-start{min-height:70px;letter-spacing:2px}
-.cover-tagline{left:-3%;right:-3%;letter-spacing:0}
+
 .cover-brand{top:max(6.5%,calc(env(safe-area-inset-top,0px) + 12px))}
 @media(max-width:350px){.cover-links button{padding-left:2px;padding-right:2px}.cover-actions{gap:10px}}
