@@ -1,4 +1,5 @@
 import './style.css';
+import {installLanguageUI} from './language-ui.js';
 import './hud.css';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
@@ -166,3 +167,4 @@ function pauseGame(){if(!['playing','countdown','private'].includes(state)){$('p
 function resumeGame(){const now=performance.now();if(state==='paused'){const delta=now-pausedAt;roundStart+=delta;countdownAt+=delta;nextSpawn+=delta;for(const a of actors){a.since+=delta;a.activeUntil+=delta;a.reactUntil=(a.reactUntil||0)+delta;a.bubbleUntil=(a.bubbleUntil||0)+delta;if(a.feedbackAt)a.feedbackAt+=delta;}for(const f of flights)f.since+=delta;state=pausedState;lastNow=now;sound.start()}$('pause-modal').hidden=true}
 const pauseMenu=installPauseMenu({pauseGame,resumeGame,sound,onMuteChange:updateMute});
 homeCover=installHomeCover({app,enabled:!privateMode&&!single&&!qa,onGuide:pauseMenu.openGuide,onInstructions:pauseMenu.openInstructions,onMusic:pauseMenu.openMusic});
+installLanguageUI();

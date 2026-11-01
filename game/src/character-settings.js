@@ -3,7 +3,8 @@ export const CHARACTER_SETTINGS_KEY='shushu.character-settings.v1';
 export function validateCharacterSettings(value){
  if(!value||typeof value.name!=='string')throw new Error('请输入角色标签');
  const name=value.name.normalize('NFC').replace(/[\u0000-\u001f\u007f]/g,'').trim();
- if(!name||Array.from(name).length>8)throw new Error('标签需要 1～8 个字');
+ const maxNameLength=/[\u3400-\u9fff]/.test(name)?8:24;
+ if(!name||Array.from(name).length>maxNameLength)throw new Error('标签需要 1～8 个中文字或 1～24 个英文字');
  if(!['number','string'].includes(typeof value.relation)||(typeof value.relation==='string'&&!value.relation.trim()))throw new Error('亲疏值需要是 −5～+5 的整数');
  const relation=typeof value.relation==='number'?value.relation:Number(value.relation);
  if(value.relation===''||!Number.isInteger(relation)||relation< -5||relation>5)throw new Error('亲疏值需要是 −5～+5 的整数');

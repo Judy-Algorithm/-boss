@@ -1,9 +1,10 @@
 import './role-stickers.css';
 import {OFFICE_LAYOUT} from './workstation.js';
+import {translate, getLanguage} from './i18n.js';
 
 function fillName(title,name,wrapped=false){
  title.replaceChildren();
- const groups=wrapped&&name==='加班大魔王'?['加班','大魔王']:wrapped&&name==='路过的实习生'?['路过的','实习生']:[name];
+ const groups=getLanguage()==='en'?[translate(name)]:wrapped&&name==='加班大魔王'?['加班','大魔王']:wrapped&&name==='路过的实习生'?['路过的','实习生']:[name];
  groups.forEach((group,index)=>{
   if(index)title.append(document.createElement('br'));
   for(const part of group.split(/(DDL|HR|IT)/).filter(Boolean)){
@@ -34,6 +35,12 @@ export function positionRoleSticker(actor,project,field,single=false){
  const side=single?-1:actor.i%2?1:-1,w=field.clientWidth,h=field.clientHeight;
  const unit=1.5*Math.max(9,Math.min(12,w*.028));
  const edge=project(actor.station.position.x+side*1.10,1.24,actor.station.position.z+.12);
+ if(getLanguage()==='en'){
+  const label=actor.label;label.style.left=`${Math.max(43,Math.min(w-43,edge.x))}px`;label.style.top=`${Math.max(122,Math.min(h-30,edge.y))}px`;
+  if(label.dataset.language!=='en'||label.dataset.name!==actor.c.name){fillName(label.firstChild,actor.c.name);label.dataset.name=actor.c.name;label.dataset.language='en';}
+  label.classList.toggle('active',actor.state==='Active'||actor.state==='React');return;
+ }
+ if(actor.label.dataset.language==='en'){fillName(actor.label.firstChild,actor.c.name);actor.label.dataset.language='zh';}
  const rowPixels=Math.abs(project(0,1.24,actor.station.position.z+OFFICE_LAYOUT.rowSpacing).y-project(0,1.24,actor.station.position.z).y);
  const textHeight=Math.max(32,Math.min(78,rowPixels-18));
  const glyphs=actor.c.name.replace(/DDL|HR|IT/g,'字').length;

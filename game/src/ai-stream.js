@@ -1,3 +1,4 @@
+import {getLanguage} from './i18n.js';
 // Both upstream OpenAI chunks and our local relay use SSE. Decode UTF-8 incrementally.
 export async function* readSSE(body){
  const reader=body.getReader(),decoder=new TextDecoder();let buffer='';
@@ -8,7 +9,7 @@ export async function* readSSE(body){
 }
 
 export async function requestDialogue(body,signal,onChunk=()=>{},path='/api/private-chat'){
- const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,stream:true}),signal:AbortSignal.any([signal,AbortSignal.timeout(14000)])});
+ const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,language:getLanguage(),stream:true}),signal:AbortSignal.any([signal,AbortSignal.timeout(14000)])});
  if(!response.ok){const data=await response.json().catch(()=>({}));throw Object.assign(Error('AI request failed'),{code:data.code});}
  let reply='',complete=false;
  for await(const packet of readSSE(response.body)){

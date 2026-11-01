@@ -1,5 +1,6 @@
 import './character-guide.css';
 import {relationPreview} from './character-settings.js';
+import {translate} from './i18n.js';
 
 const instances=new WeakMap();
 
@@ -27,8 +28,8 @@ export function renderCharacterGuide(container,characters,options={}){
 function openEditor(instance,character,focus){
  if(!instance.editor)installEditor(instance);
  const {editor,form}=instance;instance.character=character;
- form.elements.label.value=character.name;form.elements.relation.value=character.relation;
- form.elements.role.value=character.role||'';form.elements.bio.value=character.bio||'';
+ form.elements.label.value=translate(character.name);form.elements.relation.value=character.relation;
+ form.elements.role.value=translate(character.role||'');form.elements.bio.value=translate(character.bio||'');
  editor.querySelector('.settings-error').textContent='';
  editor.querySelector('.settings-original').textContent=`原角色：${character.defaultName||character.name}`;
  updatePreview(instance);editor.hidden=false;
@@ -51,7 +52,7 @@ function installEditor(instance){
  const editor=document.createElement('section');editor.id='character-settings-modal';editor.className='modal';editor.hidden=true;
  editor.setAttribute('role','dialog');editor.setAttribute('aria-modal','true');editor.setAttribute('aria-label','自定义角色');
  editor.innerHTML=`<form class="character-settings-card"><div class="guide-heading"><h2>自定义角色</h2><button type="button" class="icon-button settings-close" aria-label="关闭角色设置">×</button></div>
- <p class="settings-original"></p><label class="settings-label" for="character-label">角色标签</label><input id="character-label" name="label" type="text" maxlength="16" autocomplete="off" placeholder="1～8 个字" required>
+ <p class="settings-original"></p><label class="settings-label" for="character-label">角色标签</label><input id="character-label" name="label" type="text" maxlength="48" autocomplete="off" placeholder="1～8中文字／1～24英文字" required>
  <label class="settings-label" for="character-role">职能介绍</label><input id="character-role" name="role" type="text" maxlength="80" autocomplete="off" placeholder="例如：技术支持 / 电脑急救" required>
  <label class="settings-label" for="character-bio">性格与代表台词</label><textarea id="character-bio" name="bio" rows="3" maxlength="240" placeholder="写下性格、说话风格或一句代表台词" required></textarea>
  <div class="settings-relation-heading"><label class="settings-label" for="character-relation">亲疏值</label><output for="character-relation">0</output></div>

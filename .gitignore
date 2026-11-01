@@ -6,6 +6,8 @@ dist-it-motion/
 .openai/
 .DS_Store
 *.log
+project.private.config.json
+/wechat/build-report.json
 
 # Credentials stay on this computer; only blank templates are committed.
 .env

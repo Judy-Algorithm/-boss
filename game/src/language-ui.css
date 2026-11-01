@@ -1,0 +1,15 @@
+.language-switch{position:absolute;top:calc(env(safe-area-inset-top,0px) + 9px);right:12px;z-index:45;border:1px solid #ffe4b8;border-radius:999px;background:#fff3ddec;color:#673a4b;padding:6px 12px;font:600 13px/1.2 system-ui,sans-serif;cursor:pointer;min-height:30px;min-width:72px}
+.cover-english-heading,.cover-english-note{display:none}
+html[lang=en] .cover-english-heading{display:flex;position:absolute;left:1.5%;right:1.5%;top:3.5%;height:21%;border-radius:24px;background:#75404d;flex-direction:column;align-items:center;justify-content:center;color:#fff2d0;font:900 clamp(20px,7cqw,62px)/1.03 system-ui,sans-serif;letter-spacing:-.04em;box-shadow:0 8px 22px #66324344}
+html[lang=en] .cover-english-heading b{color:#ffd174;font-size:1.16em}
+html[lang=en] .cover-english-heading small{font:600 clamp(10px,2.4cqw,20px)/1.4 system-ui,sans-serif;letter-spacing:0;margin-top:8px}
+html[lang=en] .cover-english-note{display:flex;position:absolute;left:26%;right:25%;top:25%;height:8%;background:#ffe9ad;color:#663548;align-items:center;justify-content:center;text-align:center;font:700 clamp(10px,2.6cqw,23px)/1.4 system-ui,sans-serif;rotate:-4deg}
+html[lang=en] #home-cover #practice,html[lang=en] #home-cover #private-start{background:#ffaaa1;color:#663548;box-shadow:inset 0 0 0 3px #ffdbb6,0 5px 0 #ae5e63;font:900 clamp(15px,4.8cqw,38px)/1.1 system-ui,sans-serif}
+html[lang=en] #home-cover #private-start{background:#d1a4fc;box-shadow:inset 0 0 0 3px #f4dcff,0 5px 0 #9360b6}
+html[lang=en] #home-cover .cover-links button{color:#663548;background:#ffdfb6;font:700 clamp(11px,2.8cqw,24px)/1.1 system-ui,sans-serif;box-shadow:inset 0 0 0 2px #fff4db}
+html[lang=en] .role-name-edit,html[lang=en] .roster-item h3{font-size:15px}
+html[lang=en] #labels .role-sticker{font-size:10px!important;writing-mode:horizontal-tb;text-orientation:mixed;letter-spacing:0;width:78px;min-width:0;padding:4px 3px;text-align:center;line-height:1.1}
+html[lang=en] #labels .role-sticker .sticker-title{max-height:none;white-space:normal;word-break:normal}
+html[lang=en] .tool-select span{font-size:22px}
+html[lang=en] .header h1{font-size:28px}
+html[lang=en] #customization-status{font-size:12px}

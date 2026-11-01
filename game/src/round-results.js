@@ -1,5 +1,6 @@
 import {createAchievementPicker,roundSummary} from './achievements.js';
 import {requestDialogue,createTypewriter} from './ai-stream.js';
+import {getLanguage} from './i18n.js';
 
 const REVIEW_KEY='shushu.round-reviews.v1';
 export function createRoundResults({rank,note,storage,request=requestDialogue,random=Math.random,typingDelay=26}){
@@ -26,7 +27,7 @@ export function createRoundResults({rank,note,storage,request=requestDialogue,ra
     }catch(error){if(token!==revision||signal.aborted)return;writer.stop();
      const endings=['工位先存档，快乐继续加班！','这份快乐 KPI，明天接着涨！','今天先给自己批个快乐假！','键盘可以休息，你的快乐不下班！','下班铃还没响，快乐先打卡！'];
      const candidates=endings.map(line=>`${summary.attempts?`这局完成 ${summary.correct} 次默契配合`:'这局先认个工位'}，${line}`).filter(line=>!recent.includes(line));
-     const reply=candidates[Math.floor(random()*candidates.length)]||`第 ${recent.length+1} 次快乐打卡，下局再来一起摸鱼！`;
+     const reply=getLanguage()==='en'?`${summary.attempts?`${summary.correct} correct moves this round`:'A little office exploration'}. Your next happy break is just a tap away!`:(candidates[Math.floor(random()*candidates.length)]||`第 ${recent.length+1} 次快乐打卡，下局再来一起摸鱼！`);
      note.textContent=reply;note.dataset.source='local';note.setAttribute('aria-busy','false');remember(reply);
     }
    };run();return {...achievement,summary};

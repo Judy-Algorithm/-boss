@@ -1,0 +1,29 @@
+{
+  "description": "摸鱼事务所微信小游戏；先运行 npm run build:wechat",
+  "projectname": "moyu-office",
+  "appid": "wx6ac3f5090a6b99c5",
+  "compileType": "game",
+  "setting": {
+    "es6": false,
+    "minified": true,
+    "urlCheck": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "libVersion": "3.17.6",
+  "isGameTourist": true,
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  },
+  "miniprogramRoot": "dist/",
+  "srcMiniprogramRoot": "dist/"
+}

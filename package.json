@@ -4,6 +4,8 @@
   "scripts": {
     "dev": "npm --prefix game run dev",
     "build": "npm --prefix game run build",
-    "test": "npm --prefix game test"
+    "test": "npm --prefix game test",
+    "build:wechat": "node scripts/build-wechat.mjs",
+    "test:wechat": "npm --prefix wechat test"
   }
 }

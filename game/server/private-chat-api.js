@@ -56,6 +56,7 @@ export function createPrivateChatMiddleware({getConfig,fetchImpl=fetch,getClient
   if(limits.size>500)limits.clear();recent.push(now);limits.set(address,recent);
   let messages,payload;
   try{payload=await readJSON(req);messages=path==='/api/round-review'?buildRoundReviewMessages(payload):path==='/api/game-dialogue'?buildGameMessages(payload):buildPrivateMessages(payload);}catch(error){return error.code==='BODY_TOO_LARGE'?json(413,{code:'BODY_TOO_LARGE'}):json(400,{code:'INVALID_REQUEST'});}
+  if(payload.language==='en')messages[0].content+='\nLanguage override: Reply only in natural English. Use at most 7 words for a pop-up line, 14 words for a round review, or 25 words for private chat. This replaces the Chinese-language and Chinese-character-count requirements above. Preserve the character personality and all scoring and safety rules.';
   const controller=new AbortController();const close=()=>{if(!res.writableEnded)controller.abort();};res.on('close',close);
   active++;
   try{
@@ -64,7 +65,7 @@ export function createPrivateChatMiddleware({getConfig,fetchImpl=fetch,getClient
    if(!response.ok)throw Error('provider');
    if(payload.stream===true){
     res.statusCode=200;res.setHeader('Content-Type','text/event-stream; charset=utf-8');res.setHeader('Cache-Control','no-store');res.setHeader('X-Accel-Buffering','no');res.flushHeaders();
-    const send=(event,data)=>{if(!res.destroyed)res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);};let reply='';const max=path==='/api/game-dialogue'?45:path==='/api/round-review'?70:120;
+    const send=(event,data)=>{if(!res.destroyed)res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);};let reply='';const max=payload.language==='en'?240:path==='/api/game-dialogue'?45:path==='/api/round-review'?70:120;
     for await(const packet of readSSE(response.body)){if(packet.data==='[DONE]')break;if(packet.data.error)throw Error('provider-stream');const chunk=packet.data.choices?.[0]?.delta?.content;if(typeof chunk!=='string')continue;const next=Array.from(reply+chunk).slice(0,max).join(''),delta=next.slice(reply.length);reply=next;if(delta)send('delta',{text:delta});if(Array.from(reply).length>=max)break;}
     if(!reply.trim())throw Error('empty');send('done',{reply,source:'ai'});res.end();return;
    }

@@ -1,0 +1,5 @@
+{
+  "deviceOrientation": "portrait",
+  "showStatusBar": false,
+  "subpackages": [{"name": "models3d", "root": "models3d/"}]
+}

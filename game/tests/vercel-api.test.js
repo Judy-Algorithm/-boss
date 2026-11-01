@@ -29,6 +29,16 @@ async function serve(t,{bodyMode='raw',getConfig=()=>config,fetchImpl=provider()
 }
 const post=(url,body)=>fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 
+test('English requests keep validated canonical profiles and apply English generation instructions',async t=>{
+ const sent=[],endpoint=await serve(t,{fetchImpl:provider(value=>sent.push(value))});
+ for(const [route,body] of [['private-chat',privateBody],['game-dialogue',gameBody],['round-review',reviewBody]]){
+  const response=await post(endpoint+'/api/'+route,{...body,language:'en'});assert.equal(response.status,200);
+  assert.match(sent.at(-1).body.messages[0].content,/Reply only in natural English/);
+ }
+ const invalid=await post(endpoint+'/api/private-chat',{...privateBody,language:'en',character:{...characters[0],relation:99}});
+ assert.equal(invalid.status,400);
+});
+
 test('local and cloud config use the same server-only names and preserve local fallback',()=>{
  assert.deepEqual(readAIConfig({AI_API_KEY:'cloud',AI_MODEL:'cloud-model'},{AI_API_KEY:'local',AI_MODEL:'local-model'}),{key:'cloud',baseURL:'https://vibetoken.cn/v1',model:'cloud-model'});
  assert.equal(readAIConfig({},{AI_API_KEY:'local'}).key,'local');
