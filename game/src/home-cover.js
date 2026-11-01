@@ -4,14 +4,15 @@ export function installHomeCover({app,enabled=true,onGuide,onInstructions,onMusi
  if(!enabled)return {visible:false,show(){},hide(){}};
  const cover=document.createElement('section');
  cover.id='home-cover';cover.setAttribute('aria-label','摸鱼事务所首页');
- cover.innerHTML=`<img class="cover-art" src="/backgrounds/moyu-office-cover-v1.jpg" alt="" fetchpriority="high" decoding="async">
- <div class="cover-wash" aria-hidden="true"></div>
- <div class="cover-brand"><h1><span>摸鱼</span><span>事务所</span></h1></div>
+ cover.innerHTML=`<div class="cover-stage">
+ <img class="cover-art" src="/backgrounds/moyu-office-cover-v2.png" alt="" fetchpriority="high" decoding="async" width="941" height="1672">
+ <h1 class="cover-sr-only">摸鱼事务所 · 敲走怨气，喂点快乐。</h1>
+ <p class="cover-sr-only">你的同事，你来定义。投喂、敲击，或者聊两句。</p>
  <div class="cover-actions" aria-label="选择玩法"><p class="cover-loading" role="status">办公室准备中…</p></div>
- <nav class="cover-links" aria-label="首页菜单"><button type="button" data-page="guide">人物图鉴</button><i aria-hidden="true">·</i><button type="button" data-page="instructions">玩法说明</button><i aria-hidden="true">·</i><button type="button" data-page="music">音乐设置</button></nav>`;
+ <nav class="cover-links" aria-label="首页菜单"><button type="button" data-page="guide">人物图鉴</button><button type="button" data-page="instructions">玩法说明</button><button type="button" data-page="music">音乐设置</button></nav></div>`;
  const actions=cover.querySelector('.cover-actions');
- for(const [id,label] of [['practice','摸鱼'],['private-start','私聊']]){
-  const button=document.getElementById(id);button.textContent=label;actions.append(button);
+ for(const [id,label,description] of [['practice','摸鱼','30秒挑战'],['private-start','聊聊','选择角色私聊']]){
+  const button=document.getElementById(id);button.textContent=label;button.setAttribute('aria-label',`${label} · ${description}`);actions.append(button);
  }
  for(const [page,handler] of [['guide',onGuide],['instructions',onInstructions],['music',onMusic]])cover.querySelector(`[data-page="${page}"]`).onclick=handler;
  app.append(cover);
