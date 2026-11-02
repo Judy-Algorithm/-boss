@@ -15,6 +15,7 @@ await build({entryPoints: [path.join(root, 'wechat/src/main.js')], outfile: path
   alias: {'three/addons': path.join(root, 'game/node_modules/three/examples/jsm'), three: path.join(root, 'game/node_modules/three')}});
 await cp(path.join(root, 'wechat/game.json'), path.join(out, 'game.json'));
 await cp(path.join(root, 'wechat/cover.jpg'), path.join(out, 'assets/cover.jpg'));
+await cp(path.join(root, 'game/public/backgrounds/office-escape-en-reference.jpg'), path.join(out, 'assets/cover-en.jpg'));
 await cp(path.join(root, 'game/public/portraits'), path.join(out, 'assets/portraits'), {recursive: true});
 await cp(path.join(root, 'game/public/audio/fluffing-a-duck.mp3'), path.join(out, 'assets/music.mp3'));
 await writeFile(path.join(out, 'assets/MUSIC-LICENSE.txt'), 'Fluffing a Duck — Kevin MacLeod (incompetech.com)\nhttps://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100768\nCC BY 4.0 — https://creativecommons.org/licenses/by/4.0/\nRe-encoded to 112 kbps MP3 at 44.1 kHz; looped at reduced volume.\n');

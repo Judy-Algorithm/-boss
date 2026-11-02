@@ -2,6 +2,8 @@ import {characters} from '../../game/src/characters.js';
 import {classifyGesture} from '../../game/src/rules.js';
 import {createAchievementPicker} from '../../game/src/achievements.js';
 import {Round} from './round.js';
+import {coverLayout} from '../../game/src/cover-layout.js';
+import {drawNativeHud} from '../../game/src/hud-art.js';
 import {createNativeStage} from './stage.js';
 import {translate, getLanguage, setLanguage} from '../../game/src/i18n.js';
 
@@ -76,6 +78,7 @@ function load(key, src) {
   img.src = src;
 }
 load('cover', 'assets/cover.jpg');
+load('cover-en', 'assets/cover-en.jpg');
 characters.forEach(c => load(c.id, `assets/portraits/${c.id}.jpg`));
 
 function panel(x, y, w, h, color = '#fff4df', radius = 16) {
@@ -124,52 +127,50 @@ function header(title, back = home) {
   text(title, 24, top + 26, getLanguage() === 'en' ? 19 : 25);
   if (back) button('返回', 300, top + 5, 66, 36, back, '#fff4df', 15);
 }
+function chooseLanguage() {
+  wx.showActionSheet({itemList: ['简体中文', 'English'], success: ({tapIndex}) => {
+    if (tapIndex !== 0 && tapIndex !== 1) return;
+    setLanguage(tapIndex === 1 ? 'en' : 'zh'); save(); dirty = true;
+  }});
+}
 function cover() {
-  const art = assets.get('cover');
+  const english = getLanguage() === 'en', layout = coverLayout(getLanguage());
+  const key = english ? 'cover-en' : 'cover', art = assets.get(key);
   if (!art) {
     header('摸鱼事务所', null);
-    text(assets.has('cover') ? '办公室准备好了' : '办公室准备中…', 195, top + 100, 20, '#663548', 'center');
+    text(assets.has(key) ? '办公室准备好了' : '办公室准备中…', 195, top + 100, 20, '#663548', 'center');
     button('摸鱼 · 30秒挑战', 45, top + 180, 300, 60, start, '#ffb4a9');
     button('聊聊 · 选择角色', 45, top + 260, 300, 60, () => { pageIndex = 0; go('picker'); }, '#ddc0ff');
     button('人物图鉴', 30, bottom - 150, 100, 46, () => { pageIndex = 0; go('guide'); }, '#fff4df', 14);
     button('玩法说明', 145, bottom - 150, 100, 46, () => go('instructions'), '#fff4df', 14);
     button('音乐设置', 260, bottom - 150, 100, 46, () => go('music'), '#fff4df', 14);
+    button(english ? 'English ▾' : '简体中文 ▾', 270, top + 4, 105, 29, chooseLanguage, '#fff1d9', 14);
   } else {
-    const h = Math.min(bottom - top - 24, 390 * 1672 / 941), w = h * 941 / 1672;
+    const h = Math.min(bottom - top - 24, 390 * layout.height / layout.width), w = h * layout.width / layout.height;
     const x = (390 - w) / 2, y = top + (bottom - top - 24 - h) / 2;
-    ctx.drawImage(art, x, y, w, h);
-    if (getLanguage() === 'en') {
-      panel(x + .015 * w, y + .035 * h, .97 * w, .205 * h, '#75404d', 20);
-      text('OFFICE', 195, y + .095 * h, w * .10, '#fff2d0', 'center');
-      text('ESCAPE', 195, y + .16 * h, w * .125, '#ffd174', 'center');
-      text('Tap away stress. Share a little joy.', 195, y + .211 * h, w * .035, '#fff2d0', 'center');
-      panel(x + .27 * w, y + .25 * h, .44 * w, .085 * h, '#ffe9ad', 4);
-      text('Your coworkers, your rules.', 195, y + .277 * h, w * .03, '#663548', 'center');
-      text('Tap, treat, or chat.', 195, y + .31 * h, w * .035, '#663548', 'center');
-      for (const [label, nx, ny, nw, nh, color] of [['PLAY', .08, .721, .405, .10, '#ffaaa1'], ['CHAT', .525, .721, .4, .1, '#d1a4fc'], ['People', .143, .845, .21, .074, '#ffdfb6'], ['How to', .40, .845, .21, .074, '#ffdfb6'], ['Music', .65, .845, .21, .074, '#ffdfb6']]) {
-        panel(x + nx * w, y + ny * h, nw * w, nh * h, color, 25);
-        text(label, x + (nx + nw / 2) * w, y + (ny + nh / 2) * h, w * (ny < .8 ? .065 : .039), '#663548', 'center');
-      }
+    ctx.drawImage(art, 0, 0, layout.width, layout.height, x, y, w, h);
+    const actions = [start, () => { pageIndex = 0; go('picker'); playMusic(); },
+      () => { pageIndex = 0; go('guide'); }, () => go('instructions'), () => go('music')];
+    layout.controls.forEach(([nx,ny,nw,nh],i) => buttons.push({x:x+nx*w,y:y+ny*h,w:nw*w,h:nh*h,action:actions[i]}));
+    const [nx,ny,nw,nh] = layout.language;
+    const languageRect = {x:x+nx*w,y:y+ny*h,w:nw*w,h:nh*h};
+    // The English reference already has the language pill painted on it.
+    if (!english) {
+      panel(languageRect.x, languageRect.y + 2, languageRect.w, languageRect.h, '#a9704c');
+      panel(languageRect.x, languageRect.y, languageRect.w, languageRect.h, '#fff0d9');
+      text('简体中文 ▾', languageRect.x + languageRect.w/2, languageRect.y + languageRect.h/2, Math.min(14,w*.035), '#472b35', 'center');
     }
-    // Transparent controls align to the supplied cover's five illustrated buttons.
-    const hot = (nx, ny, nw, nh, action) => buttons.push({x: x + nx * w, y: y + ny * h, w: nw * w, h: nh * h, action});
-    hot(.08, .721, .405, .10, start);
-    hot(.525, .721, .40, .10, () => { pageIndex = 0; go('picker'); playMusic(); });
-    hot(.143, .845, .21, .074, () => { pageIndex = 0; go('guide'); });
-    hot(.40, .845, .21, .074, () => go('instructions'));
-    hot(.65, .845, .21, .074, () => go('music'));
+    buttons.push({...languageRect,action:chooseLanguage});
   }
   button('隐私与说明', 145, bottom - 22, 100, 22, () => go('privacy'), '#fff1d9', 12);
-  button(getLanguage() === 'en' ? '中文' : 'English', 22, top + 4, 88, 29, () => { setLanguage(getLanguage() === 'en' ? 'zh' : 'en'); save(); dirty = true; }, '#fff1d9', 14);
 }
 function boardRects() {
   return stage.rects;
 }
 function board() {
-  text(`得分 ${round.score}`, 20, top + 22, 23);
-  text(`${Math.ceil(round.remaining)}秒`, 242, top + 22, 22, round.remaining <= 5 ? '#c93d57' : '#663548', 'center');
-  button('暂停', 302, top + 2, 68, 38, pause, '#fff4df', 15);
-  text(`连击 ${round.combo}  ·  敲负数，喂正数，中立都可`, 20, top + 55, 13);
+  const pauseRect = drawNativeHud(ctx, {top, score:round.score, time:Math.ceil(round.remaining), combo:round.combo,
+    scoreLabel:translate('摸鱼积分'), comboLabel:translate('连击')});
+  buttons.push({...pauseRect,action:pause});
   boardRects().forEach((rect, index) => {
     const slot = round.slots[index], c = slot.character;
     if (!slot.active && slot.feedbackUntil <= round.elapsed) return;

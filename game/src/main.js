@@ -1,6 +1,7 @@
 import './style.css';
 import {installLanguageUI} from './language-ui.js';
 import './hud.css';
+import {installHudIcons} from './hud-art.js';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
@@ -29,6 +30,7 @@ import {installOfficeBackdrop,OFFICE_BACKDROP} from './office-backdrop.js';
 import {attachReactions,updateReaction,reactionFor} from './reactions.js';
 import {buildOffice,flattenSolid,box as officeBox} from './office.js';
 const $=id=>document.getElementById(id),app=$('app'),field=$('field'),params=new URLSearchParams(location.search);
+installHudIcons();
 let preferenceStorage;try{preferenceStorage=localStorage;}catch{}
 const characterSettings=createCharacterSettings(characters,preferenceStorage);
 const privateMode=params.get('mode')==='private',previewCharacter=characters.find(c=>c.id===params.get('npc')),itPilot=params.get('mode')==='it',single=privateMode||!!previewCharacter||itPilot||params.get('mode')==='single',qa=params.has('qa'),sound=new Sound();let selectedTool='chocolate',practice=false,qaPoseEnd=null,qaAutoPopAt=0,qaAutoFeedAt=0,toolDisplays={},furnitureInstances=[],privateChat=null;

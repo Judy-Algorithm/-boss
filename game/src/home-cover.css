@@ -2,21 +2,23 @@
 @font-face{font-family:'Office Rounded';src:url('/fonts/zcool-qingke-huangyou.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
 :root{--office-friendly-font:'Yuanti SC','YouYuan','PingFang SC',system-ui,sans-serif}
 #home-cover{position:absolute;inset:0;z-index:12;overflow:hidden;isolation:isolate;container-type:size;display:grid;place-items:center;background:radial-gradient(ellipse at center,#fbc38d,#ad603e);color:#fff3cc}
+html[lang=en] #home-cover:before{content:'';position:absolute;inset:-20px;background:url('/backgrounds/office-escape-en-reference.jpg') left center / 221.0072% 100% no-repeat;filter:blur(18px);opacity:.8;pointer-events:none}
 /* Keep the artwork and its five live controls in the same coordinate system. */
 .cover-stage{position:relative;width:min(100cqw,56.2799cqh);height:min(177.6833cqw,100cqh)}
-.cover-art{position:absolute;inset:0;width:100%;height:100%;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.cover-art-viewport{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.cover-art{position:absolute;left:0;top:0;max-width:none;height:100%;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .cover-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
-.cover-actions{position:absolute;left:8%;right:7.4%;top:72.1%;height:10%;display:flex;gap:4.5%}
+.cover-actions,.cover-links{position:absolute;inset:0;pointer-events:none}
 /* The supplied illustration already includes the button faces and lettering. */
 #home-cover #practice,#home-cover #private-start,.cover-links button{min-width:0;min-height:0;margin:0;padding:0;border:0;background:transparent;box-shadow:none;color:transparent;text-shadow:none;font-size:0;letter-spacing:0;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:box-shadow .15s,background .15s}
-#home-cover #practice,#home-cover #private-start{flex:1;width:auto;border-radius:999px}
+#home-cover #practice,#home-cover #private-start{position:absolute;border-radius:999px;pointer-events:auto}
 #home-cover button:enabled:hover{background:#fff6df12;box-shadow:inset 0 0 0 2px #fff7dc60}
 #home-cover button:enabled:active{translate:none;transform:none;background:#75335320;box-shadow:inset 0 3px 10px #75335340}
 #home-cover button:focus-visible{outline:3px solid #fff8d8;outline-offset:3px;box-shadow:0 0 0 6px #64326eb3}
 #home-cover .primary:disabled{opacity:1;cursor:wait;background:#6c38451c}
-.cover-links{position:absolute;left:14.3%;right:14.1%;top:84.5%;height:7.4%;display:flex;justify-content:space-between;gap:6.4%}
-.cover-links button{flex:1;border-radius:32% / 45%}
-.cover-loading{display:none;position:absolute;bottom:calc(100% + 8px);left:10%;right:10%;margin:0;padding:5px 8px;border:1px solid #ffe0a5;border-radius:20px;background:#633443e8;color:#fff5db;font:500 13px/1.4 var(--office-friendly-font);text-align:center;pointer-events:none}
+.cover-links button{position:absolute;border-radius:32% / 45%;pointer-events:auto}
+.cover-loading{display:none;position:absolute;top:68%;left:10%;right:10%;margin:0;padding:5px 8px;border:1px solid #ffe0a5;border-radius:20px;background:#633443e8;color:#fff5db;font:500 13px/1.4 var(--office-friendly-font);text-align:center;pointer-events:none}
+html[lang=en] .cover-loading{top:74%}
 #home-cover:has(#practice:disabled) .cover-loading{display:block}
 .cover-open #hud,.cover-open #tool-tray,.cover-open #pause,.cover-open #controls{visibility:hidden}
 @media(prefers-reduced-motion:reduce){#home-cover button{transition:none}}

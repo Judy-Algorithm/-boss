@@ -60,7 +60,7 @@ const entries = {
   '正在加载3D办公室…': 'Loading your 3D office...', '重试加载': 'Retry loading',
   '3D资产加载失败，请重试': '3D assets could not load. Please retry.',
   '当前设备不支持所需的3D环境，请更新微信后重试。': 'This device does not support the required 3D renderer. Update WeChat and try again.',
-  '锤走加班，投喂同盟。': 'Tap away overtime. Treat your allies.', '摸鱼积分': 'Break points', '连击': 'Combo',
+  '锤走加班，投喂同盟。': 'Tap away overtime. Treat your allies.', '摸鱼积分': 'Break Points', '连击': 'Combo',
   '投喂同盟': 'Treat your allies', '锤走加班': 'Tap away overtime', '投喂冒头的人物': 'Treat a coworker who pops up',
   '敲击冒头的人物': 'Tap a coworker who pops up', '点一下': 'Tap', '向上滑': 'Swipe up', '锤走坏老板': 'Bonk the boss',
   '投喂好同事': 'Treat your allies', '重新开始': 'Restart', '人物冒头时，点道具直接出手': 'When a coworker pops up, tap a tool to act',

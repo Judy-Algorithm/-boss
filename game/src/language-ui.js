@@ -1,5 +1,6 @@
 import {getLanguage, setLanguage, translate, onLanguageChange} from './i18n.js';
 import './language-ui.css';
+import {coverLayout} from './cover-layout.js';
 
 // Keep source text separately so toggling languages never rewrites saved character data.
 export function installLanguageUI() {
@@ -10,10 +11,12 @@ export function installLanguageUI() {
   const sources = new WeakMap();
   const brand = document.querySelector('.brand-row h1');
   if (brand) brand.dataset.noTranslate = 'true';
-  const switcher = document.createElement('button');
-  switcher.type = 'button'; switcher.className = 'language-switch'; switcher.dataset.noTranslate = 'true';
+  const switcher = document.createElement('select');
+  switcher.className = 'language-switch'; switcher.dataset.noTranslate = 'true';
   switcher.setAttribute('aria-label', 'Choose language / 选择语言');
-  document.getElementById('app').append(switcher);
+  switcher.innerHTML = '<option value="zh">简体中文</option><option value="en">English</option>';
+  // A home control: it leaves the screen together with the cover when play starts.
+  document.querySelector('.cover-stage')?.append(switcher);
   let scheduled = false;
   function original(object, field, current) {
     let fields = sources.get(object);
@@ -27,8 +30,9 @@ export function installLanguageUI() {
   function update() {
     scheduled = false;
     const lang = getLanguage(); document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
-    const switchLabel = lang === 'en' ? '中文' : 'English';
-    if (switcher.textContent !== switchLabel) switcher.textContent = switchLabel;
+    switcher.value = lang;
+    const [x,y,w,h] = coverLayout(lang).language;
+    Object.assign(switcher.style,{left:`${x*100}%`,top:`${y*100}%`,width:`${w*100}%`,height:`${h*100}%`});
     if (brand) {
       const first = lang === 'en' ? 'Office ' : '摸鱼', second = lang === 'en' ? 'Escape' : '事务所';
       if (brand.firstChild.nodeValue !== first) brand.firstChild.nodeValue = first;
@@ -52,8 +56,8 @@ export function installLanguageUI() {
   }
   const observer = new MutationObserver(() => { if (!scheduled) { scheduled = true; queueMicrotask(update); } });
   observer.observe(document.getElementById('app'), {subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['aria-label', 'placeholder', 'title', 'alt']});
-  switcher.onclick = () => {
-    setLanguage(getLanguage() === 'en' ? 'zh' : 'en');
+  switcher.onchange = () => {
+    setLanguage(switcher.value);
     try { localStorage.setItem('moyu.language.v1', getLanguage()); } catch {}
     const url = new URL(location.href); url.searchParams.set('lang', getLanguage()); history.replaceState(null, '', url);
   };
