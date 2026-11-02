@@ -42,7 +42,7 @@ export function installLanguageUI() {
     const walker = document.createTreeWalker(document.getElementById('app'), NodeFilter.SHOW_TEXT);
     let node;
     while ((node = walker.nextNode())) {
-      if (node.parentElement?.closest('[data-no-translate],script,style,input,textarea,.from-player:not(.is-action)')) continue;
+      if (node.parentElement?.closest('[data-no-translate],script,style,input,textarea,.from-player:not(.is-action) > span')) continue;
       const next = original(node, 'text', node.nodeValue);
       if (next !== node.nodeValue) node.nodeValue = next;
     }

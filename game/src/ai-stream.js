@@ -9,15 +9,18 @@ export async function* readSSE(body){
 }
 
 export async function requestDialogue(body,signal,onChunk=()=>{},path='/api/private-chat'){
- const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,language:getLanguage(),stream:true}),signal:AbortSignal.any([signal,AbortSignal.timeout(14000)])});
+ const language=body.language==='en'||body.language==='zh'?body.language:getLanguage();
+ const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,language,stream:true}),signal:AbortSignal.any([signal,AbortSignal.timeout(14000)])});
  if(!response.ok){const data=await response.json().catch(()=>({}));throw Object.assign(Error('AI request failed'),{code:data.code});}
  let reply='',complete=false;
  for await(const packet of readSSE(response.body)){
   if(packet.event==='error')throw Object.assign(Error('AI stream failed'),{code:packet.data.code});
-  if(packet.event==='delta'){reply+=packet.data.text;onChunk(reply);}
+  if(packet.event==='delta'){reply+=packet.data.text;if(language==='en'&&/\p{Script=Han}/u.test(reply))throw Object.assign(Error('AI language mismatch'),{code:'AI_LANGUAGE_MISMATCH'});onChunk(reply);}
   if(packet.event==='done'){reply=packet.data.reply||reply;complete=true;}
  }
- if(!complete||!reply.trim())throw Error('Incomplete AI response');return {reply,source:'ai'};
+ if(!complete||!reply.trim())throw Error('Incomplete AI response');
+ if(language==='en'&&/\p{Script=Han}/u.test(reply))throw Object.assign(Error('AI language mismatch'),{code:'AI_LANGUAGE_MISMATCH'});
+ return {reply,source:'ai'};
 }
 
 // Small Unicode steps also make providers that send one large chunk feel natural.

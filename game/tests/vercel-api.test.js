@@ -14,8 +14,9 @@ const gameBody={character:characters[5],event:{kind:'pop'},history:[]};
 const reviewBody={title:achievementBand(-50).titles[0],summary:{score:-50,attempts:1,correct:0,wrong:1,maxCombo:0,misses:0,hammer:{total:0,correct:0},chocolate:{total:1,correct:0},recentActions:[]}};
 const provider=record=>async(url,options)=>{
  const body=JSON.parse(options.body);record?.({url,body,headers:options.headers});
- if(body.stream)return new Response('data: '+JSON.stringify({choices:[{delta:{content:'收到啦！'}}]})+'\n\ndata: [DONE]\n\n');
- return Response.json({choices:[{message:{content:'收到啦！'}}]});
+ const reply=body.messages[0].content.includes('Reply only in natural English')?'Got it!':'收到啦！';
+ if(body.stream)return new Response('data: '+JSON.stringify({choices:[{delta:{content:reply}}]})+'\n\ndata: [DONE]\n\n');
+ return Response.json({choices:[{message:{content:reply}}]});
 };
 async function serve(t,{bodyMode='raw',getConfig=()=>config,fetchImpl=provider()}={}){
  const handler=createVercelHandler({getConfig,fetchImpl});
@@ -34,6 +35,8 @@ test('English requests keep validated canonical profiles and apply English gener
  for(const [route,body] of [['private-chat',privateBody],['game-dialogue',gameBody],['round-review',reviewBody]]){
   const response=await post(endpoint+'/api/'+route,{...body,language:'en'});assert.equal(response.status,200);
   assert.match(sent.at(-1).body.messages[0].content,/Reply only in natural English/);
+  assert.doesNotMatch(sent.at(-1).body.messages[0].content,/只输出一句中文|中文说话|字的中文/);
+  assert.equal((await response.json()).reply,'Got it!');
  }
  const invalid=await post(endpoint+'/api/private-chat',{...privateBody,language:'en',character:{...characters[0],relation:99}});
  assert.equal(invalid.status,400);

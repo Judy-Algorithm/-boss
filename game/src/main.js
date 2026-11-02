@@ -1,5 +1,6 @@
 import './style.css';
 import {installLanguageUI} from './language-ui.js';
+import {getLanguage} from './i18n.js';
 import './hud.css';
 import {installHudIcons} from './hud-art.js';
 import * as THREE from 'three';
@@ -80,7 +81,7 @@ function updateUIForActor(a,now){const pos=a.station.position;positionRoleSticke
  const rowSpacing=single?999:Math.abs(project(0,.85,pos.z+OFFICE_LAYOUT.rowSpacing).y-project(0,.85,pos.z).y);
  a.hitBox.h=Math.min(a.hitBox.h,rowSpacing*.9);a.hitBox.y=Math.max(0,a.hitBox.y);a.hitBox.h=Math.min(field.clientHeight-a.hitBox.y,a.hitBox.h);a.touch.hidden=a.state!==State.Active;Object.assign(a.touch.style,{left:a.hitBox.x+'px',top:a.hitBox.y+'px',width:a.hitBox.w+'px',height:a.hitBox.h+'px'});
 }
-function say(a,text,now,duration=1800,source='ai'){const points=Array.from(String(text).replace(/\s+/g,' ')),limit=privateMode?80:45;a.bubble.textContent=points.slice(0,limit).join('')+(points.length>limit?'…':'');a.bubble.dataset.source=source;a.bubbleUntil=now+duration}
+function say(a,text,now,duration=1800,source='ai'){const points=Array.from(String(text).replace(/\s+/g,' ')),limit=getLanguage()==='en'?(privateMode?180:80):(privateMode?80:45);a.bubble.textContent=points.slice(0,limit).join('')+(points.length>limit?'…':'');a.bubble.dataset.source=source;a.bubbleUntil=now+duration}
 function transition(a,to,now){a.state=to;a.since=now;record('state',{id:a.c.id,state:to});if(to===State.PopUp){a.activeUntil=now+220+(practice?4300:2200)+Math.random()*600;if(!privateMode&&state==='playing')gameDialogue.start(a,'pop');sound.effect('pop')}if(to===State.Hidden){gameDialogue.cancel(a);a.bubbleUntil=0;nextSpawn=Math.max(nextSpawn,now+420)}}
 function pop(a,now){if(a.state!==State.Hidden)return;transition(a,State.PopUp,now)}
 function prepareNextActor(){let available=actors.filter(a=>a.i!==lastActor);if(!available.length)available=actors;nextDialogueActor=available[Math.floor(Math.random()*available.length)];if(nextDialogueActor)gameDialogue.prefetch(nextDialogueActor);}
@@ -155,11 +156,11 @@ async function furnishOffice(){
 }
 
 function cancelPrivatePick(){if(state==='choosing'){state='home';resetActors(performance.now());sound.stop();homeCover?.show();}app.classList.remove('choosing-private');privatePicker?.remove();privatePicker=null;for(const a of actors)a.touch.setAttribute('aria-label','互动 '+a.c.name);}
-function enterPrivate(actor){if(!ready||!actor)return;location.assign(`/?mode=private&npc=${encodeURIComponent(actor.c.id)}`);}
+function enterPrivate(actor){if(!ready||!actor)return;location.assign(`/?mode=private&npc=${encodeURIComponent(actor.c.id)}&lang=${getLanguage()}`);}
 function choosePrivate(){if(!ready)return;cancelPrivatePick();homeCover?.hide();resetActors(performance.now());qaPoseEnd=null;state='choosing';app.classList.add('choosing-private');sound.start();const now=performance.now();for(const a of actors){transition(a,State.Active,now);a.activeUntil=Infinity;a.touch.setAttribute('aria-label','私聊 '+a.c.name);}privatePicker=document.createElement('div');privatePicker.className='private-picker';const text=document.createElement('span');text.textContent='轻点一位角色，开始私聊';const cancel=document.createElement('button');cancel.type='button';cancel.textContent='取消';cancel.onclick=cancelPrivatePick;privatePicker.append(text,cancel);app.append(privatePicker);record('private-pick');}
 $('private-start').onclick=choosePrivate;
 function startPrivateRoom(){if(privateChat)return;resetActors(performance.now());state='private';const a=actors[0];transition(a,State.Active,performance.now());a.activeUntil=Infinity;$('scene').setAttribute('aria-label',a.c.name+'的单人工位');
- privateChat=installPrivateChat({app,character:a.c,onBack:()=>location.assign('/'),
+ privateChat=installPrivateChat({app,character:a.c,onBack:()=>location.assign(`/?lang=${getLanguage()}`),
   onAction(kind){if(state!=='private'||a.state!==State.Active)return false;const now=performance.now(),correct=scoreFor(a.c.relation,kind)>0;playReaction(a,kind,now,correct);sound.start();sound.effect(kind);launch(a,kind,now);record('private-action',{id:a.c.id,kind,correct});return true;},
   onReply(text,event,meta={}){say(a,text,performance.now(),meta.streaming?14000:5500,meta.source||'ai');}
  });privateChat.greet();sound.beginSession();resize();record('private-start',{id:a.c.id});

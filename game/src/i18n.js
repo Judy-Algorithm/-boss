@@ -22,6 +22,11 @@ export const EN_CHARACTERS = {
   promise_maker: ['Dream Seller', 'Strategy / Big promises', 'The future is bright!', 'Easy! I will deliver this time!', 'Thanks! Your reward arrives next year!', 'Work hard this year. Next year, we are all owners!']
 };
 const entries = {
+  '摸鱼事务所首页': 'Office Escape home',
+  'AI 回复语言异常，请重试。': 'The AI replied in the wrong language. Please try again.',
+  '我来找你私聊。': 'I came over to chat.', '[玩家敲击了你]': '[The player gave you a playful tap]',
+  '[玩家投喂了猫零食]': '[The player shared a cat treat]', '[玩家投喂了巧克力]': '[The player shared a chocolate treat]',
+  '[角色冒头]': '[You popped up]', '[玩家敲击]': '[The player gave you a playful tap]', '[玩家投喂]': '[The player shared a treat]',
   '摸鱼事务所': 'Office Escape', '摸鱼': 'Take a Break', '事务所': 'Office', '聊聊': 'Chat', '私聊': 'Chat',
   '敲走怨气，喂点快乐。': 'Tap away stress. Share a little joy.', '你的同事，你来定义。投喂、敲击，或者聊两句。': 'Your coworkers, your rules. Tap, treat, or chat.',
   '返回': 'Back', '继续': 'Resume', '暂停': 'Pause', '人物图鉴': 'Characters', '人物': 'People', '音乐': 'Music',
@@ -124,6 +129,9 @@ export function translate(value, lang = language) {
   const trimmed = raw.trim();
   if (entries[trimmed] !== undefined) return raw.replace(trimmed, entries[trimmed]);
   const patterns = [
+    [/^(.+)的单人工位$/, (_, name) => `${translate(name,'en')}'s private desk`],
+    [/^(互动|私聊) (.+)$/, (_, action, name) => `${action==='互动'?'Interact with':'Chat with'} ${translate(name,'en')}`],
+    [/^正在回应(?: · 还有 (\d+) 条)?…$/, (_, n) => n ? `Replying · ${n} more queued…` : 'Replying…'],
     [/^得分 (-?\d+)$/, (_, n) => `Score ${n}`], [/^(\d+)秒$/, (_, n) => `${n}s`], [/^(-?\d+) 分$/, (_, n) => `${n} points`],
     [/^连击 (\d+)  ·  敲负数，喂正数，中立都可$/, (_, n) => `Combo ${n} · Tap negatives. Treat positives.`],
     [/^正确 (\d+)\/(\d+) · 最高连击 (\d+)$/, (_, a, b, c) => `Correct ${a}/${b} · Best combo ${c}`],

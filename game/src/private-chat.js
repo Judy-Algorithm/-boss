@@ -1,6 +1,7 @@
 import './private-chat.css';
 import {createPrivateChatSession} from './private-chat-session.js';
 import {requestDialogue,createTypewriter} from './ai-stream.js';
+import {translate} from './i18n.js';
 
 export function installPrivateChat({app,character,onAction,onReply,onBack}){
  const header=document.createElement('header');header.className='private-header';
@@ -13,7 +14,7 @@ export function installPrivateChat({app,character,onAction,onReply,onBack}){
  const input=document.createElement('input');input.type='text';input.maxLength=300;input.placeholder='和 TA 说点什么…';input.autocomplete='off';input.setAttribute('aria-label','私聊消息');
  const send=document.createElement('button');send.type='submit';send.textContent='发送';form.append(input,send);panel.append(log,status,form);app.append(header,panel);
  let sourceStatus='正在检查 AI 连接…',writer=null,responseItem=null,currentSource='ai';
- function append(who,text,event=false){const item=document.createElement('p');item.className=`private-message ${who==='user'?'from-player':'from-character'}${event?' is-action':''}`;const label=document.createElement('small');label.textContent=who==='user'?'你':character.name;const content=document.createElement('span');content.textContent=text;item.append(label,content);log.append(item);while(log.children.length>40)log.firstChild.remove();log.scrollTop=log.scrollHeight;return {item,content,label};}
+ function append(who,text,event=false){const item=document.createElement('p');item.className=`private-message ${who==='user'?'from-player':'from-character'}${event?' is-action':''}`;const label=document.createElement('small');label.textContent=translate(who==='user'?'你':character.name);const content=document.createElement('span');content.textContent=text;item.append(label,content);log.append(item);while(log.children.length>40)log.firstChild.remove();log.scrollTop=log.scrollHeight;return {item,content,label};}
  const session=createPrivateChatSession({character,
   request:requestDialogue,
   onStart(event){currentSource='ai';responseItem=append('assistant','…');writer?.stop();writer=createTypewriter(text=>{responseItem.content.textContent=text;onReply(text,event,{source:currentSource,streaming:true});log.scrollTop=log.scrollHeight;});onReply('…',event,{source:'pending',streaming:true});},
