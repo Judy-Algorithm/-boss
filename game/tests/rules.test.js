@@ -10,3 +10,12 @@ test('a visible character remains interactive throughout its reaction, but not w
  for(const state of [State.Active,State.React])assert.equal(canInteract(state),true);
  for(const state of [State.Hidden,State.PopUp,State.Retreat,undefined])assert.equal(canInteract(state),false);
 });
+
+test('slow AI and its reading interval keep characters visible until the reply has settled',async()=>{
+ const {dialogueSettled}=await import('../src/rules.js');
+ const actor={aiPending:true,aiDeadline:16000,aiReadUntil:0};
+ assert.equal(dialogueSettled(actor,3000),false);assert.equal(dialogueSettled(actor,14000),false);
+ actor.aiPending=false;actor.aiReadUntil=17000;
+ assert.equal(dialogueSettled(actor,16000),false);assert.equal(dialogueSettled(actor,17000),true);
+ actor.aiPending=true;actor.aiReadUntil=0;assert.equal(dialogueSettled(actor,16001),true);
+});

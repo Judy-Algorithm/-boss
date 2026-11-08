@@ -103,3 +103,24 @@ test('rapid round feedback generates only the latest line and reset cancels defe
  assert.equal(calls.length,1);assert.equal(calls[0].event.kind,'chocolate');
  dialogue.queue(actor,'hammer');dialogue.reset();await new Promise(resolve=>setTimeout(resolve,300));assert.equal(calls.length,1);
 });
+
+test('repeated actions do not abort an in-flight reply or starve dialogue during continuous taps',async()=>{
+ const calls=[],words=[],actor={c:profile()};
+ const dialogue=createGameDialogue({readingDelay:0,request:(body,signal,onChunk)=>new Promise(resolve=>calls.push({body,signal,onChunk,resolve})),onText:(_,text)=>words.push(text)});
+ dialogue.queue(actor,'hammer');await new Promise(resolve=>setTimeout(resolve,280));
+ assert.equal(calls.length,1);
+ for(let i=0;i<30;i++)dialogue.queue(actor,i===29?'chocolate':'hammer');
+ assert.equal(calls[0].signal.aborted,false);assert.equal(calls.length,1);
+ calls[0].onChunk('好');calls[0].resolve({reply:'好'});
+ await new Promise(resolve=>setTimeout(resolve,340));
+ assert.ok(words.includes('好'));assert.equal(calls.length,2);assert.equal(calls[1].body.event.kind,'chocolate');
+ dialogue.reset();assert.equal(calls[1].signal.aborted,true);
+});
+
+test('reset cancels a pending action even while the previous reply is being typed',async()=>{
+ const calls=[],actor={c:profile()};
+ const dialogue=createGameDialogue({request:(body,signal)=>new Promise(resolve=>calls.push({body,signal,resolve})),onText(){}});
+ dialogue.start(actor,'hammer');dialogue.queue(actor,'chocolate');
+ calls[0].resolve({reply:'这是一句需要时间打完的台词'});await Promise.resolve();dialogue.reset();
+ await new Promise(resolve=>setTimeout(resolve,300));assert.equal(calls.length,1);assert.equal(actor.aiPending,false);
+});

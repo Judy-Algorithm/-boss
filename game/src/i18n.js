@@ -22,6 +22,8 @@ export const EN_CHARACTERS = {
   promise_maker: ['Dream Seller', 'Strategy / Big promises', 'The future is bright!', 'Easy! I will deliver this time!', 'Thanks! Your reward arrives next year!', 'Work hard this year. Next year, we are all owners!']
 };
 const entries = {
+  'AI 正忙，请稍后重试。': 'AI is busy. Please try again shortly.',
+  'AI 请求超时，请稍后重试。': 'AI request timed out. Please try again.',
   '摸鱼事务所首页': 'Office Escape home',
   'AI 回复语言异常，请重试。': 'The AI replied in the wrong language. Please try again.',
   '我来找你私聊。': 'I came over to chat.', '[玩家敲击了你]': '[The player gave you a playful tap]',
