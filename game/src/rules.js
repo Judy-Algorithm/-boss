@@ -1,7 +1,16 @@
 import {achievementBand} from './achievements.js';
 export const ROUND_SECONDS=30;
 export const State=Object.freeze({Hidden:'Hidden',PopUp:'PopUp',Active:'Active',React:'React',Retreat:'Retreat'});
-export function dialogueSettled(actor,now){return (!actor.aiPending||now>actor.aiDeadline)&&now>=(actor.aiReadUntil||0)}
+// Appearance timing is independent of reactions, repeated hits and AI latency.
+export function nextActorState(actor,now,timed=true){
+ const {state,since,activeUntil,reactUntil}=actor;
+ if(timed&&[State.PopUp,State.Active,State.React].includes(state)&&now>=activeUntil)return State.Retreat;
+ if(state===State.PopUp&&now-since>=420)return State.Active;
+ if(state===State.React&&now>=(reactUntil??since+2400))return State.Active;
+ if(state===State.Retreat&&now-since>=650)return State.Hidden;
+ return state;
+}
+export function canHitActor(actor,now,timed=true){return canInteract(actor?.state)&&(!timed||now<actor.activeUntil)}
 export function canInteract(state){return state===State.Active||state===State.React}
 export function scoreFor(relation,kind){return relation===0?5:10*relation*(kind==='hammer'?-1:1)}
 export function capacity(elapsed){return elapsed<10?1:elapsed<20?2:3}

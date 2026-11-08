@@ -49,3 +49,17 @@ test('rapid alternating tools sum every hit and a handled target is not counted 
  assert.equal(round.score,750);assert.equal(round.attempts,25);assert.equal(round.correct,20);assert.equal(round.combo,0);assert.equal(round.maxCombo,20);
  round.elapsed=2.1;assert.equal(round.hit(0,'hammer'),null);round.update(0);assert.equal(round.misses,0);
 });
+
+test('continuous hits cannot extend a spawn and the next spawn is a different coworker',()=>{
+ const round=new Round(()=>0);round.update(0);
+ const first=round.slots[0],deadline=first.until;
+ for(let i=0;i<41;i++){
+  assert.ok(round.hit(0,i%2?'hammer':'chocolate'));
+  assert.equal(first.until,deadline);
+  round.update(.05);
+ }
+ round.update(.1);
+ assert.equal(first.active,false);assert.equal(first.until,deadline);
+ const score=round.score;assert.equal(round.hit(0,'hammer'),null);assert.equal(round.score,score);
+ assert.ok(round.slots.some((slot,index)=>index!==0&&slot.active));
+});

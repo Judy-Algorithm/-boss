@@ -165,7 +165,7 @@ export function createNativeStage(onChange) {
         const active = chatIndex >= 0 ? i === chatIndex : round?.slots[i].active;
         a.station.visible = chatIndex < 0 || i === chatIndex;
         a.privateDesk.visible = chatIndex >= 0;
-        const next = a.reactionUntil > clock ? 'React' : active ? 'Active' : 'Hidden';
+        const next = !active ? 'Hidden' : a.reactionUntil > clock ? 'React' : 'Active';
         if (next !== a.state) { a.state = next; a.since = clock; }
         const desired = next === 'Hidden' ? -.32 : .24;
         a.actor.position.y += (desired - a.actor.position.y) * Math.min(1, dt * 12);
