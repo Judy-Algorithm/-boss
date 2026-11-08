@@ -9,8 +9,9 @@ export function coverLayout(language) {
   return {
     image: english ? '/backgrounds/office-escape-en-reference.jpg' : '/backgrounds/moyu-office-cover-v2.png',
     sourceWidth: english ? 1536 : 941, sourceHeight: english ? 1024 : 1672,
-    width: english ? 695 : 941, height: english ? 1024 : 1672,
+    width: 941, height: 1672,
+    cropWidth: english ? 695 : 941, cropHeight: english ? 1024 : 1672,
     controls: controls[english ? 'en' : 'zh'],
-    language: english ? [525/695,20/1024,157/695,55/1024] : [.75,.012,.23,.045]
+    language: [.735,.014,.255,.065]
   };
 }

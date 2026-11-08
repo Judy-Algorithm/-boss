@@ -149,18 +149,22 @@ function cover() {
   } else {
     const h = Math.min(bottom - top - 24, 390 * layout.height / layout.width), w = h * layout.width / layout.height;
     const x = (390 - w) / 2, y = top + (bottom - top - 24 - h) / 2;
-    ctx.drawImage(art, 0, 0, layout.width, layout.height, x, y, w, h);
+    ctx.drawImage(art, 0, 0, layout.cropWidth, layout.cropHeight, x, y, w, h);
     const actions = [start, () => { pageIndex = 0; go('picker'); playMusic(); },
       () => { pageIndex = 0; go('guide'); }, () => go('instructions'), () => go('music')];
     layout.controls.forEach(([nx,ny,nw,nh],i) => buttons.push({x:x+nx*w,y:y+ny*h,w:nw*w,h:nh*h,action:actions[i]}));
     const [nx,ny,nw,nh] = layout.language;
     const languageRect = {x:x+nx*w,y:y+ny*h,w:nw*w,h:nh*h};
-    // The English reference already has the language pill painted on it.
-    if (!english) {
-      panel(languageRect.x, languageRect.y + 2, languageRect.w, languageRect.h, '#a9704c');
-      panel(languageRect.x, languageRect.y, languageRect.w, languageRect.h, '#fff0d9');
-      text('简体中文 ▾', languageRect.x + languageRect.w/2, languageRect.y + languageRect.h/2, Math.min(14,w*.035), '#472b35', 'center');
-    }
+    const {x:lx,y:ly,w:lw,h:lh}=languageRect;
+    panel(lx, ly + 3, lw, lh, '#ae714b', lh/2);
+    panel(lx, ly, lw, lh, '#fff0d7', lh/2);
+    const r=Math.min(7,lw*.07),cx=lx+lw*.17,cy=ly+lh/2;
+    ctx.save();ctx.strokeStyle='#653d35';ctx.lineWidth=1.3;
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,cy-r);ctx.bezierCurveTo(cx+r*.55,cy-r,cx+r*.55,cy+r,cx,cy+r);ctx.bezierCurveTo(cx-r*.55,cy+r,cx-r*.55,cy-r,cx,cy-r);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx-r,cy);ctx.lineTo(cx+r,cy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(lx+lw*.84,cy-2);ctx.lineTo(lx+lw*.88,cy+2);ctx.lineTo(lx+lw*.92,cy-2);ctx.stroke();ctx.restore();
+    text(english?'English':'中文', lx+lw*.54, cy, Math.min(14,w*.034), '#653d35', 'center');
     buttons.push({...languageRect,action:chooseLanguage});
   }
   button('隐私与说明', 145, bottom - 22, 100, 22, () => go('privacy'), '#fff1d9', 12);

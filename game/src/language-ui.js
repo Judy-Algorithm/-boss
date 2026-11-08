@@ -11,12 +11,17 @@ export function installLanguageUI() {
   const sources = new WeakMap();
   const brand = document.querySelector('.brand-row h1');
   if (brand) brand.dataset.noTranslate = 'true';
+  const picker = document.createElement('div');
+  picker.className = 'language-picker'; picker.dataset.noTranslate = 'true';
+  picker.innerHTML = `<svg class="language-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 6.5h14M5 17.5h14"/></svg><span class="language-current"></span><svg class="language-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>`;
+  const current = picker.querySelector('.language-current');
   const switcher = document.createElement('select');
   switcher.className = 'language-switch'; switcher.dataset.noTranslate = 'true';
   switcher.setAttribute('aria-label', 'Choose language / 选择语言');
   switcher.innerHTML = '<option value="zh">简体中文</option><option value="en">English</option>';
   // A home control: it leaves the screen together with the cover when play starts.
-  document.querySelector('.cover-stage')?.append(switcher);
+  picker.append(switcher);
+  document.querySelector('.cover-stage')?.append(picker);
   let scheduled = false;
   function original(object, field, current) {
     let fields = sources.get(object);
@@ -31,8 +36,10 @@ export function installLanguageUI() {
     scheduled = false;
     const lang = getLanguage(); document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
     switcher.value = lang;
+    const label = lang === 'en' ? 'English' : '中文';
+    if (current.textContent !== label) current.textContent = label;
     const [x,y,w,h] = coverLayout(lang).language;
-    Object.assign(switcher.style,{left:`${x*100}%`,top:`${y*100}%`,width:`${w*100}%`,height:`${h*100}%`});
+    Object.assign(picker.style,{left:`${x*100}%`,top:`${y*100}%`,width:`${w*100}%`,height:`${h*100}%`});
     if (brand) {
       const first = lang === 'en' ? 'Office ' : '摸鱼', second = lang === 'en' ? 'Escape' : '事务所';
       if (brand.firstChild.nodeValue !== first) brand.firstChild.nodeValue = first;

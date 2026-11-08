@@ -2,7 +2,6 @@
 @font-face{font-family:'Office Rounded';src:url('/fonts/zcool-qingke-huangyou.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
 :root{--office-friendly-font:'Yuanti SC','YouYuan','PingFang SC',system-ui,sans-serif}
 #home-cover{position:absolute;inset:0;z-index:12;overflow:hidden;isolation:isolate;container-type:size;display:grid;place-items:center;background:radial-gradient(ellipse at center,#fbc38d,#ad603e);color:#fff3cc}
-html[lang=en] #home-cover:before{content:'';position:absolute;inset:-20px;background:url('/backgrounds/office-escape-en-reference.jpg') left center / 221.0072% 100% no-repeat;filter:blur(18px);opacity:.8;pointer-events:none}
 /* Keep the artwork and its five live controls in the same coordinate system. */
 .cover-stage{position:relative;width:min(100cqw,56.2799cqh);height:min(177.6833cqw,100cqh)}
 .cover-art-viewport{position:absolute;inset:0;overflow:hidden;pointer-events:none}

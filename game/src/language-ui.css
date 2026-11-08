@@ -1,8 +1,10 @@
-.language-switch{position:absolute;z-index:2;appearance:none;-webkit-appearance:none;min-width:0;min-height:0;margin:0;padding:0 4px;border:2px solid #ffefd5;border-radius:999px;background:#fff0d9;color:#472b35;box-shadow:0 3px 0 #a9704c80;font:800 clamp(9px,2.6cqw,18px)/1.2 system-ui,sans-serif;text-align:center;cursor:pointer}
-/* The English illustration includes this exact pill; keep its native select live. */
-html[lang=en] .language-switch{padding:0;border:0;background:transparent;box-shadow:none;color:transparent}
-.language-switch option{color:#472b35;background:#fff0d9}
-.language-switch:focus-visible{outline:3px solid #fff8d8;outline-offset:2px}
+.language-picker{position:absolute;z-index:2;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 8px;min-width:0;color:#653d35;border:1.5px solid #fff4dd;border-radius:999px;background:linear-gradient(#fff8e8,#ffe6bd);box-shadow:inset 0 1px 1px #fff,0 3px 0 #ae714b,0 4px 8px #633b3829;font:750 clamp(11px,3.4cqw,15px)/1.2 var(--office-friendly-font);white-space:nowrap}
+.language-globe{width:18px;height:18px;flex:none}
+.language-chevron{width:12px;height:12px;flex:none}
+.language-current{flex:1;text-align:center}
+.language-switch{position:absolute;inset:0;appearance:none;-webkit-appearance:none;opacity:0;cursor:pointer;width:100%;height:100%;min-width:0;margin:0;padding:0;font:inherit}
+.language-switch option{color:#653d35;background:#fff3dc}
+.language-picker:focus-within{outline:3px solid #fff8d8;outline-offset:3px}
 html[lang=en] .role-name-edit,html[lang=en] .roster-item h3{font-size:15px}
 html[lang=en] #labels .role-sticker{font-size:10px!important;writing-mode:horizontal-tb;text-orientation:mixed;letter-spacing:0;width:78px;min-width:0;padding:4px 3px;text-align:center;line-height:1.1}
 html[lang=en] #labels .role-sticker .sticker-title{max-height:none;white-space:normal;word-break:normal}

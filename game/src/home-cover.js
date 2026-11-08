@@ -24,7 +24,7 @@ export function installHomeCover({app,enabled=true,onGuide,onInstructions,onMusi
   const layout=coverLayout(getLanguage()),ratio=layout.width/layout.height;
   stage.style.width=`min(100cqw,${ratio*100}cqh)`;stage.style.height=`min(${100/ratio}cqw,100cqh)`;
   art.src=layout.image;art.width=layout.sourceWidth;art.height=layout.sourceHeight;
-  art.style.width=`${layout.sourceWidth/layout.width*100}%`;
+  art.style.width=`${layout.sourceWidth/layout.cropWidth*100}%`;
   controls.forEach((button,i)=>{
    const [x,y,w,h]=layout.controls[i];
    Object.assign(button.style,{left:`${x*100}%`,top:`${y*100}%`,width:`${w*100}%`,height:`${h*100}%`});
