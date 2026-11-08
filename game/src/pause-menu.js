@@ -13,7 +13,7 @@ export function installPauseMenu({pauseGame,resumeGame,sound,onMuteChange}){
  <p><b>选对加分，选错扣同样的分。</b><br>分数＝亲疏值去掉正负号 × 10。<br>亲疏值为 0，两种都加 5 分。</p>
  <p>亲疏值可在人物图鉴修改，按当前值计分。30 秒后结算总分。</p>
  <h3>私聊</h3>
- <p>首页点「私聊」，再选一位角色。<br>可以打字聊天，也可以投喂或敲击。<br>不限时、不计分，点左上角返回首页。</p>
+ <p>首页点「私聊」，再选一位角色。<br>可以打字聊天，也可以投喂或敲击。<br>不限时，可连续互动并累加分数，点左上角返回首页。</p>
  </div>`;
  $('app').append(instructions);
  const help=document.createElement('button');help.id='menu-instructions';help.textContent='游戏说明';card.append(help);$('menu-credits')?.remove();

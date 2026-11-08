@@ -1,5 +1,5 @@
 import {characters} from '../../game/src/characters.js';
-import {classifyGesture} from '../../game/src/rules.js';
+import {classifyGesture,scoreFor} from '../../game/src/rules.js';
 import {createAchievementPicker} from '../../game/src/achievements.js';
 import {Round} from './round.js';
 import {coverLayout} from '../../game/src/cover-layout.js';
@@ -15,6 +15,7 @@ const round = new Round();
 let page = 'home', pageIndex = 0, selected = 'chocolate', hidden = false;
 let buttons = [], gesture = null, lastFrame = null, width, height, scale, top, bottom;
 let dirty = true, epoch = 0, result = null, chatCharacter = null, chatText = '', chatAction = '';
+let chatScore = 0;
 let musicEnabled = false, best = null, storageFailed = false;
 try {
   const saved = wx.getStorageSync(STORE);
@@ -201,7 +202,7 @@ function roster(mode) {
     text(c.name, 102, y + 23, 17);
     text(`${c.relation > 0 ? '+' : ''}${c.relation} · ${c.relation === 0 ? '两种道具都 +5' : c.relation > 0 ? '投喂得分' : '敲击得分'}`, 102, y + 49, 13);
     if (mode === 'picker') button('聊聊', 296, y + 22, 62, 40, () => {
-      chatCharacter = c; chatText = c.bio; chatAction = '同事的开场白'; enterWorld('chat');
+      chatCharacter = c; chatScore = 0; chatText = c.bio; chatAction = '同事的开场白'; enterWorld('chat');
     }, '#dfc3fc', 14);
     else text(translate(c.role).split(' / ')[0], 102, y + 69, 12);
   });
@@ -211,6 +212,7 @@ function roster(mode) {
 }
 function chat() {
   header(chatCharacter.name, () => go('picker'));
+  text(`${translate('摸鱼积分')} ${chatScore}`, 28, top + 55, 14);
   const heroHeight = Math.min(190, (bottom - top) * .25), bubbleHeight = Math.min(132, (bottom - top) * .21);
   text('本地角色互动 · 预设台词', 195, top + 60 + heroHeight + 8, 12, '#8a6170', 'center');
   const y = top + 60 + heroHeight + 22;
@@ -218,10 +220,12 @@ function chat() {
   text(chatAction, 40, y + 22, 12, '#a06b72');
   wrap(chatText, 40, y + 48, 310, getLanguage() === 'en' ? 15 : 17, 23);
   button('投喂', 24, bottom - 157, 164, 44, () => {
+    chatScore += scoreFor(chatCharacter.relation, 'chocolate');
     stage.hit(characters.indexOf(chatCharacter), 'chocolate', chatCharacter.relation >= 0);
     chatAction = '你投喂了同事'; chatText = chatCharacter.relation >= 0 ? chatCharacter.correct : chatCharacter.wrong; dirty = true;
   }, '#ddc0ff');
   button('玩具锤', 202, bottom - 157, 164, 44, () => {
+    chatScore += scoreFor(chatCharacter.relation, 'hammer');
     stage.hit(characters.indexOf(chatCharacter), 'hammer', chatCharacter.relation <= 0);
     chatAction = '你轻敲了同事'; chatText = chatCharacter.relation < 0 ? chatCharacter.correct : chatCharacter.wrong; dirty = true;
   }, '#ffbcb2');
@@ -254,7 +258,7 @@ function instructions() {
     '6. 正确加分，选错扣分；中立均+5。',
     '7. 亲疏绝对值越大，分值越高。',
     '8. 切到后台会暂停，回来手动继续。',
-    '聊聊模式不限时、不计分，使用预设台词。'
+    '聊聊模式不限时，可连续互动并累加分数，使用预设台词。'
   ];
   let y = top + 70;
   for (const line of lines) y = wrap(line, 26, y, 338, 15, 23) + 6;

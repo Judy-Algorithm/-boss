@@ -146,7 +146,7 @@ export function createNativeStage(onChange) {
     return {x: (v.x + 1) * 195, y: viewportTop + (1 - v.y) * (viewportBottom - viewportTop) / 2};
   }
   function hit(index, kind, correct) {
-    const a = actors[index]; a.state = 'React'; a.since = clock; a.reactionUntil = clock + 1.1; a.reactKind = kind; a.reactCorrect = correct;
+    const a = actors[index]; a.motion.actions?.[a.motion.current]?.reset().play(); a.state = 'React'; a.since = clock; a.reactionUntil = clock + 1.1; a.reactKind = kind; a.reactCorrect = correct;
     props[kind] && (props[kind].userData.flight = {index, since: clock});
   }
   function present({world = false, dt = 0, round, chatIndex = -1, selected = 'chocolate'} = {}) {

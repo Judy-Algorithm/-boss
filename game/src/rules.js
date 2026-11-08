@@ -1,6 +1,7 @@
 import {achievementBand} from './achievements.js';
 export const ROUND_SECONDS=30;
 export const State=Object.freeze({Hidden:'Hidden',PopUp:'PopUp',Active:'Active',React:'React',Retreat:'Retreat'});
+export function canInteract(state){return state===State.Active||state===State.React}
 export function scoreFor(relation,kind){return relation===0?5:10*relation*(kind==='hammer'?-1:1)}
 export function capacity(elapsed){return elapsed<10?1:elapsed<20?2:3}
 export function classifyGesture(dx,dy,ms,maxDistance=Math.hypot(dx,dy)){

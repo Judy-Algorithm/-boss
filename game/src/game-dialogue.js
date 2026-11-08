@@ -2,11 +2,12 @@ import {requestDialogue,createTypewriter} from './ai-stream.js';
 import {getLanguage,translate} from './i18n.js';
 
 export function createGameDialogue({onText,onDone,request=requestDialogue}){
- const running=new Map(),histories=new Map(),prepared=new Map();
+ const running=new Map(),histories=new Map(),prepared=new Map(),queued=new Map();
  const profile=c=>({id:c.id,name:c.name,role:c.role,bio:c.bio,relation:c.relation});
  const signature=(character,language)=>JSON.stringify({character,language});
- function cancel(actor){const job=running.get(actor);if(job){running.delete(actor);job.controller.abort();job.writer.stop();}actor.aiPending=false;actor.aiReadUntil=0;}
- return {
+ function cancel(actor){clearTimeout(queued.get(actor));queued.delete(actor);const job=running.get(actor);if(job){running.delete(actor);job.controller.abort();job.writer.stop();}actor.aiPending=false;actor.aiReadUntil=0;}
+ const api = {
+  queue(actor,kind){cancel(actor);queued.set(actor,setTimeout(()=>{queued.delete(actor);api.start(actor,kind);},250));},
   prefetch(actor){
    const character=profile(actor.c),language=getLanguage(),key=signature(character,language),old=prepared.get(actor);
    if(old?.signature===key)return;old?.controller.abort();
@@ -24,6 +25,7 @@ export function createGameDialogue({onText,onDone,request=requestDialogue}){
     .catch(error=>{if(!current())return;job.writer.stop();actor.aiPending=false;running.delete(actor);onText(actor,translate(error.code==='AI_NOT_CONFIGURED'?'AI 尚未配置':error.code==='AI_LANGUAGE_MISMATCH'?'AI 回复语言异常，请重试。':'AI 暂未连通',language),'error');actor.aiReadUntil=performance.now()+500;onDone?.(actor,kind,'error');});
   },
   cancel,
-  reset(){for(const actor of [...running.keys()])cancel(actor);for(const job of prepared.values())job.controller.abort();prepared.clear();histories.clear();}
+  reset(){for(const actor of [...queued.keys()])cancel(actor);for(const actor of [...running.keys()])cancel(actor);for(const job of prepared.values())job.controller.abort();prepared.clear();histories.clear();}
  };
+ return api;
 }

@@ -8,16 +8,21 @@ export function privateEvent(character,kind,text=''){
 
 // One ordered conversation per room. Leaving cancels queued work and stale replies.
 export function createPrivateChatSession({character,request,onReply,onStatus,onStart,onChunk}){
- let history=[],tail=Promise.resolve(),pending=0,closed=false,turn=0;
+ let history=[],tail=Promise.resolve(),pending=0,closed=false,turn=0,queuedTool=null;
  const language=getLanguage();
  const controllers=new Set();
  return {
   send(kind,text=''){
-   if(closed||pending>=8)return false;
-   const event=privateEvent(character,kind,text);if(kind==='message'&&!event.text)return false;
+   if(closed)return false;
+   const tool=kind==='hammer'||kind==='chocolate';
+   const event=privateEvent(character,kind,text);
+   if(tool&&queuedTool&&(queuedTool.kind===kind||pending>=8)){Object.assign(queuedTool,event);return true;}
+   if(!tool&&pending>=8)return false;
+   if(tool)queuedTool=event;if(kind==='message'&&!event.text)return false;
    pending++;onStatus?.('pending',pending);
    tail=tail.then(async()=>{
     if(closed)return;
+    if(queuedTool===event)queuedTool=null;
     const profile={id:character.id,name:character.name,role:character.role,bio:character.bio,relation:character.relation};
     const controller=new AbortController();controllers.add(controller);
     let reply,source='local',reason='',partial='';onStart?.(event);

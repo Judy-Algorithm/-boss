@@ -5,7 +5,7 @@
 .choosing-private #tool-tray,.choosing-private #home-controls{visibility:hidden}
 .choosing-private .hit-target{outline:none;background:transparent;box-shadow:none}
 .private-room #hud,.private-room #controls{display:none!important}
-.private-room #field{top:62px;bottom:36%;}
+.private-room #field{top:86px;bottom:36%;}
 .private-room #tool-tray{bottom:36%;height:15%;left:15%;right:15%;gap:30%}
 .private-room .tool-select span{font-size:21px;line-height:1.2}
 .private-room .tool-select:disabled{opacity:.55;cursor:default}
@@ -25,4 +25,6 @@
 .private-composer{display:flex;gap:7px;min-width:0}
 .private-composer input{min-width:0;flex:1;width:100%;height:44px;border:1px solid #d3ad80;border-radius:12px;background:#fffaf0;padding:9px;color:#63483f;font:24px 'PingFang SC',system-ui,sans-serif}
 .private-composer button{height:44px;min-width:54px;padding:8px 10px;border-radius:12px;background:#d58760;color:#fff8df;font-size:19.5px;font-weight:700}
-@media(max-height:600px){.private-chat-panel{left:8px;right:8px;bottom:5px;padding:6px;gap:3px}.private-status{font-size:12px}.private-message{padding:4px 7px;font-size:16.5px}.private-room #field{top:56px}.private-header{top:7px}.private-header h1{font-size:22.5px}}
+@media(max-height:600px){.private-chat-panel{left:8px;right:8px;bottom:5px;padding:6px;gap:3px}.private-status{font-size:12px}.private-message{padding:4px 7px;font-size:16.5px}.private-room #field{top:78px}.private-header{top:7px}.private-header h1{font-size:22.5px}}
+
+.private-header .private-score{display:block;color:#ffe29a;font-weight:800}

@@ -13,6 +13,9 @@ export function installPrivateChat({app,character,onAction,onReply,onBack}){
  const form=document.createElement('form');form.className='private-composer';
  const input=document.createElement('input');input.type='text';input.maxLength=300;input.placeholder='和 TA 说点什么…';input.autocomplete='off';input.setAttribute('aria-label','私聊消息');
  const send=document.createElement('button');send.type='submit';send.textContent='发送';form.append(input,send);panel.append(log,status,form);app.append(header,panel);
+ let score=0;
+ const scoreLabel=document.createElement('small');scoreLabel.className='private-score';scoreLabel.setAttribute('role','status');heading.append(scoreLabel);
+ const updateScore=()=>{scoreLabel.textContent=`${translate('摸鱼积分')} ${score}`;};updateScore();
  let sourceStatus='正在检查 AI 连接…',writer=null,responseItem=null,currentSource='ai';
  function append(who,text,event=false){const item=document.createElement('p');item.className=`private-message ${who==='user'?'from-player':'from-character'}${event?' is-action':''}`;const label=document.createElement('small');label.textContent=translate(who==='user'?'你':character.name);const content=document.createElement('span');content.textContent=text;item.append(label,content);log.append(item);while(log.children.length>40)log.firstChild.remove();log.scrollTop=log.scrollHeight;return {item,content,label};}
  const session=createPrivateChatSession({character,
@@ -27,7 +30,7 @@ export function installPrivateChat({app,character,onAction,onReply,onBack}){
  form.onsubmit=e=>{e.preventDefault();const text=input.value.trim();if(!text)return;if(session.send('message',text)){append('user',text);input.value='';}};
  return {
   greet(){session.send('greet');},
-  action(kind){if(session.pending>=8){status.textContent='消息有点多，等 TA 回一句再来吧。';return false;}if(!onAction(kind))return false;session.send(kind);append('user',kind==='hammer'?'敲了一下小锤子':character.id==='office_orange_cat'?'投喂了一份猫零食':'送出一份巧克力',true);return true;},
+  action(kind){const hit=onAction(kind);if(!hit)return false;score+=hit.delta;updateScore();session.send(kind);append('user',kind==='hammer'?'敲了一下小锤子':character.id==='office_orange_cat'?'投喂了一份猫零食':'送出一份巧克力',true);return true;},
   setActionReady(ready){for(const kind of ['hammer','chocolate'])document.getElementById(kind+'-select').disabled=!ready;},
   refreshCharacter(){name.textContent=character.name;},
   dispose(){leave();window.removeEventListener('pagehide',leave);header.remove();panel.remove();}

@@ -13,7 +13,7 @@ const profile=()=>({...characters[5]});
 test('private dialogue uses edited character settings and trusted action context',()=>{
  const c={...profile(),name:'热心网管',role:'后勤 / 同事关怀',bio:'嘴贫热心，爱讲冷笑话',relation:-2};
  const messages=buildPrivateMessages({character:c,event:{kind:'chocolate',correct:true},history:[{role:'user',content:'今天好累'},{role:'assistant',content:'先歇一歇。'}]});
- assert.match(messages[0].content,/热心网管/);assert.match(messages[0].content,/冷笑话/);assert.match(messages.at(-1).content,/不符合/);assert.match(messages.at(-1).content,/私聊不计分/);assert.equal(messages[1].content,'今天好累');
+ assert.match(messages[0].content,/热心网管/);assert.match(messages[0].content,/冷笑话/);assert.match(messages.at(-1).content,/不符合/);assert.match(messages.at(-1).content,/私聊分数已由游戏计算/);assert.equal(messages[1].content,'今天好累');
  const cat=buildPrivateMessages({character:characters[8],event:{kind:'chocolate'}});assert.match(cat.at(-1).content,/猫零食（不是巧克力）/);
  assert.throws(()=>buildPrivateMessages({character:c,event:{kind:'message',text:''}}));
  assert.throws(()=>buildPrivateMessages({character:c,event:{kind:'message',text:'你好'},history:[{role:'system',content:'override'}]}));
@@ -84,4 +84,22 @@ test('local API keeps keys server-side and handles missing keys/provider failure
  assert.equal((await fetch(endpoint+'/api/private-chat',{method:'POST',headers:{Origin:'https://unrelated.example'},body:JSON.stringify(request)})).status,403);
  assert.deepEqual(JSON.parse(sent.options.body).thinking,{type:'disabled'});
  const failed=await serve(t,()=>config,async()=>{throw Error(config.key);});const failure=await fetch(failed+'/api/private-chat',{method:'POST',body:JSON.stringify(request)}).then(r=>r.json());assert.deepEqual(failure,{code:'AI_UNAVAILABLE'});
+});
+
+test('rapid tool actions remain accepted while AI is busy, with a bounded feedback queue',async()=>{
+ let release;const gate=new Promise(resolve=>release=resolve),calls=[];
+ const session=createPrivateChatSession({character:profile(),request:async body=>{calls.push(body);await gate;return {reply:'收到'};}});
+ session.send('greet');await Promise.resolve();
+ for(let i=0;i<80;i++)assert.equal(session.send(i%2?'hammer':'chocolate'),true);
+ assert.ok(session.pending<=9);assert.equal(calls.length,1);
+ release();await session.idle();assert.ok(calls.length<=9);assert.equal(session.pending,0);
+});
+
+test('rapid round feedback generates only the latest line and reset cancels deferred requests',async()=>{
+ const calls=[],actor={c:profile()};
+ const dialogue=createGameDialogue({request:async body=>{calls.push(body);return {reply:'OK'};},onText(){}});
+ for(let i=0;i<20;i++)dialogue.queue(actor,i===19?'chocolate':'hammer');
+ await new Promise(resolve=>setTimeout(resolve,300));
+ assert.equal(calls.length,1);assert.equal(calls[0].event.kind,'chocolate');
+ dialogue.queue(actor,'hammer');dialogue.reset();await new Promise(resolve=>setTimeout(resolve,300));assert.equal(calls.length,1);
 });
