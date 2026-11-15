@@ -52,3 +52,11 @@ test('invalid character descriptions are rejected without mutating the actor',()
  assert.equal(settings.save('boss',{role:'<b>老板</b>',bio:'A\nB'}).bio,'AB');
  assert.equal(characters[0].role,'<b>老板</b>'); // Rendered with textContent, never interpreted as HTML.
 });
+
+test('retired stock name migrates to Senior Manager while player names and affinity survive',()=>{
+ const defaults=()=>[{id:'blame_shifter',name:'上级领导',relation:-4,role:'管理层 / 工作督导',bio:'目标要清楚，事情一步一步做好。'}];
+ const saved=name=>storage(JSON.stringify({version:1,characters:{blame_shifter:{name,relation:2,role:'跨部门协作 / 责任转移',bio:'这事儿我熟！但不是我负责！'}}}));
+ const migrated=defaults();createCharacterSettings(migrated,saved('甩锅大师'));
+ assert.equal(migrated[0].name,'上级领导');assert.equal(migrated[0].relation,2);assert.equal(migrated[0].role,'管理层 / 工作督导');
+ const custom=defaults();createCharacterSettings(custom,saved('王经理'));assert.equal(custom[0].name,'王经理');assert.equal(custom[0].relation,2);
+});

@@ -34,7 +34,14 @@ export function createCharacterSettings(characters,storage){
   const saved=JSON.parse(storage?.getItem(CHARACTER_SETTINGS_KEY)||'null');
   if(saved?.version===1&&saved.characters&&typeof saved.characters==='object'){
    for(const c of characters){if(!Object.hasOwn(saved.characters,c.id))continue;
-    try{const patch=validateCharacterSettings(saved.characters[c.id]);overrides[c.id]=patch;Object.assign(c,patch);}catch{/* One invalid entry must not discard the other saved roles. */}
+    try{const patch=validateCharacterSettings(saved.characters[c.id]);
+     // Migrate the retired stock name without overwriting player-created names or affinity.
+     if(c.id==='blame_shifter'&&patch.name==='甩锅大师'){
+      patch.name=c.name;
+      if(patch.role==='跨部门协作 / 责任转移')patch.role=c.role;
+      if(patch.bio==='这事儿我熟！但不是我负责！')patch.bio=c.bio;
+     }
+     overrides[c.id]=patch;Object.assign(c,patch);}catch{/* One invalid entry must not discard the other saved roles. */}
    }
   }
  }catch{/* A missing, corrupt or unavailable browser store uses the original roster. */}
