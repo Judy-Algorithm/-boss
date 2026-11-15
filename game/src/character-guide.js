@@ -10,7 +10,7 @@ export function renderCharacterGuide(container,characters,options={}){
  Object.assign(instance,{characters,options});
  container.replaceChildren(...characters.map(c=>{
   const row=document.createElement('article');row.className='roster-item';row.dataset.character=c.id;
-  const portrait=document.createElement('img');portrait.className='roster-portrait';portrait.src=`/portraits/${c.id}.jpg`;portrait.alt=`${c.name}头像`;portrait.width=portrait.height=64;portrait.decoding='async';
+  const portrait=document.createElement('img');portrait.className='roster-portrait';portrait.src=`/portraits/${c.id}.jpg${c.id==='blame_shifter'?'?v=hyper3d-original-20261115':''}`;portrait.alt=`${c.name}头像`;portrait.width=portrait.height=64;portrait.decoding='async';
   const details=document.createElement('div'),name=document.createElement('h3'),role=document.createElement('small'),quote=document.createElement('p');
   const title=document.createElement(options.settings?'button':'span');title.className='role-name-edit';title.textContent=c.name;
   if(options.settings){title.type='button';title.setAttribute('aria-label',`修改${c.name}的标签`);title.onclick=()=>openEditor(instance,c,'name');}
